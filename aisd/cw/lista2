@@ -1,0 +1,20 @@
+zad4.
+
+Korzystam z master theorem
+
+a = 2, b = 2, d = 0
+log(b)a = 1 > 0 = d
+T(n) = Thetha (n^1)
+
+a = 2, b = 2, d = 1
+log(b)a = 1 = d
+T(n) = Thetha(nlogn)
+
+nlogn = n^d
+log n = n^(d-1)
+log(n)logn = d-1
+log(n)logn + 1 = d
+d(n) = log(n)logn + 1 -> lim n->inf d(n) = 1
+a = 3, b = 2
+
+T(n) = Thetha (n^log(2)3)

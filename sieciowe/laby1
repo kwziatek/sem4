@@ -1,0 +1,20 @@
+Jak działa ping?
+
+Nawiązuje połączenie z wpisanym adresem IP i wysyła echo request packet. Gdy nawiążę połączenie zwraca echo replay packet.
+
+Co zwraca ping? Liczbę bajtów ze strony (jej aders IP), icmp_seq(numer pinga), ttl, czas powrtony sygnału
+2^n - liczba przeskoków powrtonych = ttl
+
+flagi:
+-t określa max liczbe pakietów
+-c określa liczbę wysłanych pingów (pakietów)
+-s rozmiar pakietu
+-M do nie pozwala na fragmentacje
+-M dont pozwala na fragmentacje
+-M want pozwala na fragmentacje
+
+Adres witryny/lokalizacja/wielkość pakietu/ilość skoków tam/ilość skoków z powrotem/czyFragmentowane
+
+ping -s -p [tu wiadomość] [adres IP]
+
+
