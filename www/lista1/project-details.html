@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Szczegóły Projektów</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>Fragmenty kodu</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Strona Główna</a></li>
+      <li><a href="projects.html">Projekty</a></li>
+      <li><a href="project-details.html">Fragmenty kodu</a></li>
+      <li><a href="interests.html">Zainteresowania</a></li>
+      <li><a href="photos.html">Zdjęcia</a> </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h3>
+      <p>
+        - Jakimi fragmentami kodu chciałbym się pochwalić?
+      </p>
+      <p>
+        - W projektach, które opisałem w zakładce "Projekty", kod pisany był bardzo prosto, bez żadnych sztuczek implementacyjnych.
+        Z tego względu zamieszczam kilka problemów, króki opis algorytmu i (ciekawą) część implementacji w C++.
+      </p>
+    </h3>
+  </section>
+  <section id="project1">
+    <h2>Sumy częściowe</h2>
+    <img src="sumy_częściowe.png" alt="sumy częściowe" class = "problem">
+    <p>
+      Każdy wyraz ciągu b można policzyć osobno, sumując kolejne wyrazy ciągu a.
+      To podejście ma jednak złożoność kwadratową.
+      Stosuję lepszą metodę, sumuję wszystkie wyrazy ciągu a i w ten sposób otrzymuje b(1).
+      Zauważam, że b(i) = b(i-1) - a(i), dla i&nbsp;=&nbsp;2,3,...,n i wyliczam wszystkie pozostałe b(i).
+    </p>
+    <pre><code>
+int n,t[1000001];
+long long res;
+int main()
+{
+    std::ios_base::sync_with_stdio(0);
+    cin>>n;
+    for(int i=1; i<=n; i++){
+        cin>>t[i];
+        res+=t[i];
+    }
+    for(int i=1; i<=n; i++){
+        res-=t[i-1];
+        cout << res <<" ";
+    }
+
+    return 0;
+}
+      </code></pre>
+  </section>
+
+  <section id="project2">
+    <h2>Cięcie prostokątów</h2>
+    <img src="recantgle_cutting.png" alt="recantgle_cutting" class = "problem">
+    <p>
+      Wynik dla prostokąta o wymiarach (a,b) będzie równy sumie wyników najkorzystniejszego z podziałów tego prostokąta + 1.
+      Można by się wywoływać rekurencyjnie i liczyć to samo dla mniejszych prostokątów aż natrafi się na kwadraty.
+      Jednakże, wywołując rekurencyjnie, często liczy się wielokrotnie wynik dla tych samych wymiarów prostokątów.
+      Z tego względu wykorzystam programowanie dynamiczne, co zaoszczędzi mi wielu operacji.
+    </p>
+    <pre><code>
+#include &lt;bits/stdc++.h>
+
+using namespace std;
+int dp[501][501],a,b;
+int main()
+{
+    cin>>a>>b;
+
+    for(int i=1; i<=a; i++){
+        for(int j=1; j<=b; j++){
+            dp[i][j]=INT_MAX;
+            if(i==j){
+                dp[i][j]=0;
+            }
+            else{
+                for(int k=1; k&lt;i; k++){
+                    dp[i][j]=min(dp[i][j], dp[k][j]+dp[i-k][j]+1);
+                }
+                for(int k=1; k&lt;j; k++){
+                    dp[i][j]=min(dp[i][j], dp[i][k]+dp[i][j-k]+1);
+                }
+            }
+        }
+    }
+    cout<&lt;dp[a][b];
+
+    return 0;
+}</code></pre>
+  </section>
+
+  <section id="project3">
+    <h2>Dijkstra</h2>
+    <p>
+      Na koniec wrzucam moją implementację algorytmu dijsktry, czyli rozwiązania problemu
+      znajdowania najkrótszej ścieżki w grafie (w tym przypadku skierowanym).
+    </p>
+    <pre><code>
+#include &lt;bits/stdc++.h>
+#define ll long long
+using namespace std;
+ll n,m,x=1e18;
+vector &lt;ll> dis;
+bool vis[1000001],k[1000001];
+priority_queue &lt;pair&lt;ll,ll>> q;
+vector&lt;pair&lt;ll,ll>> adj[1000001];
+
+int main()
+{
+    cin>>n>>m;
+    for(int i=1; i<=m; i++){
+        ll a,b,c;
+        cin>>a>>b>>c;
+        adj[a].push_back({b,c});
+    }
+    dis.resize(n+2,x);
+    dis[1]=0;
+    q.push({0,1});
+    while(!q.empty()){
+        ll v=q.top().second;
+        q.pop();
+        if(!vis[v]){
+            vis[v]=true;
+            for(auto it: adj[v]){
+                if(dis[v]+it.second&lt;dis[it.first]){
+                    dis[it.first]=dis[v]+it.second;
+                    q.push({-dis[it.first],it.first});
+                }
+
+            }
+        }
+
+    }
+    for(int i=1; i<=n; i++){
+        cout<&lt;dis[i]<<" ";
+    }
+    return 0;
+}
+      </code></pre>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 Moje Portfolio</p>
+</footer>
+</body>
+</html>
