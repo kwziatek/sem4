@@ -3,12 +3,20 @@ $primary-color: #EFDFBB;
 $secondary-color: #722F37;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
+$code-font: monospace;
 
 // 2. Mixins
 @mixin respond-to($breakpoint) {
   @media (min-width: $breakpoint) {
     @content;
   }
+}
+
+@mixin code-style {
+  font-family: $code-font;
+  background-color: darken($primary-color, 10%);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
 }
 
 // 3. Functions
@@ -20,9 +28,38 @@ $breakpoint-desktop: 1024px;
 %shared-section {
   background-color: $secondary-color;
   color: $primary-color;
+  padding: 1rem 0;
+  width: 100%;
 }
 
-// 5. Nested Selectors
+// 5. Nested Selectors with Code Formatting
+header {
+  @extend %shared-section;
+  
+  h1 {
+    text-align: justify;
+    margin: 0 1rem;
+    
+    // Code fragments in header
+    code {
+      @include code-style;
+      font-size: 0.9em;
+      color: $secondary-color;
+    }
+  }
+}
+
+// Section headers with code
+section {
+  h2, h3 {
+    code {
+      @include code-style;
+      color: darken($secondary-color, 15%);
+    }
+  }
+}
+
+// Reszta styli pozostaje bez zmian
 html, body {
   height: 100%;
   margin: 0;
@@ -36,12 +73,6 @@ html, body {
     flex: 1;
     color: $secondary-color;
   }
-}
-
-header {
-  @extend %shared-section;
-  padding: 1rem 0;
-  width: 100%;
 }
 
 nav {
@@ -120,6 +151,4 @@ section {
 footer {
   @extend %shared-section;
   text-align: center;
-  padding: 1rem 0;
-  width: 100%;
 }

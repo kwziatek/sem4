@@ -1,0 +1,2 @@
+lmss :: [Integer] -> Integer
+lmss [] = []

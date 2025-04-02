@@ -1,0 +1,9 @@
+wykorzystanie mechanizmów Sass:
+1. zmienne (primary - color, breakpoint - tablet)
+2. misins (@mixin respond - to)
+3. funkcje (gallery - width)
+4. rozszerzenia (@extended %shared - section)
+5. Zagnieżdżenia selektorów (@extended %shared-section)
+
+sass styles.scss styles.css -style expanded
+sass styles.scss styles.min.css -- style compressed

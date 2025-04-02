@@ -13,8 +13,34 @@ flagi:
 -M dont pozwala na fragmentacje
 -M want pozwala na fragmentacje
 
-Adres witryny/lokalizacja/wielkość pakietu/ilość skoków tam/ilość skoków z powrotem/czyFragmentowane
-
 ping -s -p [tu wiadomość] [adres IP]
+
+Adres witryny/lokalizacja/wielkość pakietu/ilość skoków tam/ilość skoków z powrotem/czyFragmentowane/czyJestSygnałPowrotny
+usosweb.uw.edu.pl/Warszawa/56B/13/-/nie/nie
+usosweb.uw.edu.pl/Warszawa/56B/13/-/tak/nie
+usosweb.uw.edu.pl/Warszawa/56B/14/11/nie/tak
+usosweb.uw.edu.pl/Warszawa/56B/14/11/tak/tak
+usosweb.uw.edu.pl/Warszawa/1000B/14/11/nie/tak
+usosweb.uw.edu.pl/Warszawa/1000B/14/11/tak/tak
+usosweb.uw.edu.pl/Warszawa/1468B/14/11/nie/tak
+usosweb.uw.edu.pl/Warszawa/1468B/14/11/tak/tak
+usosweb.uw.edu.pl/Warszawa/1469B/14/-/nie/nie
+usosweb.uw.edu.pl/Warszawa/1469B/14/11/tak/tak
+usosweb.uw.edu.pl/Warszawa/1500B/14/11/tak/tak
+usosweb.uw.edu.pl/Warszawa/1742B/14/11/tak/tak
+usosweb.uw.edu.pl/Warszawa/1743B/14/-/tak/nie
+www.npu.ac.th/Tajlandia/56B/18/-/nie/nie
+www.npu.ac.th/Tajlandia/56B/18/-/tak/nie
+www.npu.ac.th/Tajlandia/56B/19/18/nie/tak
+www.npu.ac.th/Tajlandia/56B/19/18/tak/tak
+www.npu.ac.th/Tajlandia/500B/19/18/nie/tak
+www.npu.ac.th/Tajlandia/500B/19/18/tak/tak
+www.npu.ac.th/Tajlandia/750B/19/18/nie/tak
+www.npu.ac.th/Tajlandia/750B/19/18/tak/tak
+www.npu.ac.th/Tajlandia/996B/19/18/nie/tak
+www.npu.ac.th/Tajlandia/996B/19/18/tak/tak
+www.npu.ac.th/Tajlandia/997B/19/-/nie/nie
+www.npu.ac.th/Tajlandia/997B/19/-/tak/nie
+
 
 
