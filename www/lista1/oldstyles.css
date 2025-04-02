@@ -1,0 +1,129 @@
+/* Mobile First */
+h1 {
+  text-align: center;
+}
+html, body {
+  height: 100%; /* Ustaw wysokość html i body na 100% */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column; /* Układ kolumnowy */
+  background-color: #EFDFBB;
+  /* #EFDFBB */
+  /* #722F37 */
+}
+
+body {
+  flex: 1; /* Rozciągnij body, aby wypełnić dostępną przestrzeń */
+  color: #722F37;
+}
+
+header {
+  background-color: #722F37;
+  padding: 1rem 0;
+  width: 100%;
+  color: #EFDFBB;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  margin: 0.5rem 1rem;
+}
+
+nav ul li a {
+  color: #EFDFBB;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.profile-photo {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+}
+
+main {
+  padding: 1rem;
+  flex: 1; /* Rozciągnij main, aby wypełnić dostępną przestrzeń */
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+pre {
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.gallery img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.problem {
+  width: 100%;
+  max-width: 1500px;
+  border-radius: 10px;
+}
+
+footer {
+  background-color: #722F37;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  nav ul li {
+    margin: 0 1rem;
+  }
+
+  .profile-photo {
+    width: 200px;
+    height: 200px;
+  }
+
+  .gallery img {
+    width: calc(50% - 1rem);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  main {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto; /* Wyśrodkuj main na dużych ekranach */
+  }
+
+  nav ul li a {
+    font-size: 1.2rem;
+  }
+
+  .gallery img {
+    width: calc(33.333% - 1rem);
+  }
+}
