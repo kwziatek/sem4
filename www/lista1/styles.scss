@@ -1,0 +1,125 @@
+// 1. Variables
+$primary-color: #EFDFBB;
+$secondary-color: #722F37;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+
+// 2. Mixins
+@mixin respond-to($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+// 3. Functions
+@function gallery-width($columns) {
+  @return calc((100% / $columns) - 1rem);
+}
+
+// 4. Extend/Placeholders
+%shared-section {
+  background-color: $secondary-color;
+  color: $primary-color;
+}
+
+// 5. Nested Selectors
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: $primary-color;
+
+  body {
+    flex: 1;
+    color: $secondary-color;
+  }
+}
+
+header {
+  @extend %shared-section;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+nav {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    li {
+      margin: 0.5rem 1rem;
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        font-size: 1rem;
+
+        @include respond-to($breakpoint-desktop) {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}
+
+.profile-photo {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+
+  @include respond-to($breakpoint-tablet) {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+main {
+  padding: 1rem;
+  flex: 1;
+
+  @include respond-to($breakpoint-desktop) {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+
+    @include respond-to($breakpoint-tablet) {
+      width: gallery-width(2);
+    }
+
+    @include respond-to($breakpoint-desktop) {
+      width: gallery-width(3);
+    }
+  }
+}
+
+footer {
+  @extend %shared-section;
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+}
