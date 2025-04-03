@@ -1,0 +1,120 @@
+header, footer {
+  background-color: #722F37;
+  color: #EFDFBB;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+header h1 {
+  text-align: justify;
+  margin: 0 1rem;
+}
+header h1 code {
+  font-family: monospace;
+  background-color: #e5cc92;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+  color: #722F37;
+}
+
+section h2 code, section h3 code {
+  font-family: monospace;
+  background-color: #e5cc92;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  color: #3c191d;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: #EFDFBB;
+}
+html body, body body {
+  flex: 1;
+  color: #722F37;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+nav ul li {
+  margin: 0.5rem 1rem;
+}
+nav ul li a {
+  color: #EFDFBB;
+  text-decoration: none;
+  font-size: 1rem;
+}
+@media (min-width: 1024px) {
+  nav ul li a {
+    font-size: 1.2rem;
+  }
+}
+
+.profile-photo {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+}
+@media (min-width: 768px) {
+  .profile-photo {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+main {
+  padding: 1rem;
+  flex: 1;
+}
+@media (min-width: 1024px) {
+  main {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.gallery img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+}
+@media (min-width: 768px) {
+  .gallery img {
+    width: calc((100% / $columns) - 1rem);
+  }
+}
+@media (min-width: 1024px) {
+  .gallery img {
+    width: calc((100% / $columns) - 1rem);
+  }
+}
+
+footer {
+  text-align: center;
+}
+
+/*# sourceMappingURL=styles.expanded.css.map */

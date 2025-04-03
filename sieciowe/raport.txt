@@ -138,4 +138,15 @@ adres nadawcy - pozostaje taki sam (adres karty sieciowej)
 adres odbiorcy - adres docelowego urządzenia
 
 
-co może powodować, że liczba skoków w jedną stronę wynosi 6 a z powrotem 18?
+co może powodować, że liczba skoków w jedną stronę wynosi 6 a z powrotem 18?Sprawdza lokalną pamięć podręczną DNS (cache) w
+
+
+Dane, które chce przekazac wysylam do protokołu transportowy (icmp, udp, tcp), ten protokół jest ładowany do protokołu IP
+
+Bajty są pakowane na podstawie protokoulu icmp do datagramu protokolu ip
+
+OD NOWA
+Chcemy wysłać jakąś wiadomość - bajty. Na podstawie protokołu icmp tworzony jest pakiet imcp. Pakiet icmp składa się z nagłówka imcp i danych(tych bajtów).
+Następnie następuje proces enkapsulacji icmp w pakiecie ip (inaczej datagramie). Pakiet ip składa się z nagłówka ip (nagłówek zawiera wersje ip, ktory protokol uzyty (w tym przypadku icmp), ttl, adres źr, adres docelowy) i pakietu icmp.
+Datagram jest umieszczany w ramca ethernetowej w polu przeznaczonym na ładunek. Ramka ehternetowa jest wysyłana przez karte sieciowa przy pomocy fali elektromagnetycznych, fale są modulowane przez zmiane amplitudy i częstotliwości fal.
+

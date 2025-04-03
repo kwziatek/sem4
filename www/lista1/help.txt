@@ -5,5 +5,5 @@ wykorzystanie mechanizmów Sass:
 4. rozszerzenia (@extended %shared - section)
 5. Zagnieżdżenia selektorów (@extended %shared-section)
 
-sass styles.scss styles.css -style expanded
+sass styles.scss styles.css --style expanded
 sass styles.scss styles.min.css -- style compressed
