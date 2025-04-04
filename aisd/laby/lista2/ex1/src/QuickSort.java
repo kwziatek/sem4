@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class QuickSort {
     int comparisonCounter = 0;
     int switchesCounter = 0;
+    ArrayList<Integer> array = new ArrayList<>();
     public static void main(String[] args) {
         QuickSort quickSort = new QuickSort();
         Scanner sc = new Scanner(System.in);
@@ -76,10 +78,16 @@ public class QuickSort {
             printArray(t);
             System.out.println();
         } else {
-            quicksort(t, 0,size - 1);
-            System.out.println("Liczba porównań między kluczami: " + comparisonCounter);
-            System.out.println("Liczba zamian kluczy: " + switchesCounter);
+            quicksort(t, 0, size - 1);
         }
+        System.out.println("Liczba porównań między kluczami: " + comparisonCounter);
+        System.out.println("Liczba zamian kluczy: " + switchesCounter);
+
+        if(num == 1) {
+            array.add(comparisonCounter);
+            array.add(switchesCounter);
+        }
+
         System.out.println("Czy jest posortowana? " + checkIfSorted(t));
         setComparisonCounterToZero();
         setSwitchesCounterToZero();
@@ -127,5 +135,9 @@ public class QuickSort {
 
     public int getSwitchesCounter() {
         return switchesCounter;
+    }
+
+    public ArrayList<Integer> getArray() {
+        return array;
     }
 }

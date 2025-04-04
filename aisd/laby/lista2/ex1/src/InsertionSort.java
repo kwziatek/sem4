@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class InsertionSort {
     int comparisonCounter = 0;
     int switchesCounter = 0;
+    ArrayList<Integer> array = new ArrayList<>();
     public static void main(String[] args) {
         InsertionSort insertionSort = new InsertionSort();
         Scanner sc = new Scanner(System.in);
@@ -24,10 +26,12 @@ public class InsertionSort {
             int j = i;
             increaseComparisonCounter();
             while (j > 0 && compare(arr[j], arr[j - 1])) {
-                increaseComparisonCounter();
                 swap(arr, j);
                 increaseSwitchesCounter();
                 j--;
+                if(j != 0) {
+                    increaseComparisonCounter();
+                }
             }
             if(arr.length < 40) {
                 printArray(arr);
@@ -70,9 +74,17 @@ public class InsertionSort {
             System.out.println();
         } else {
             insertionSort(t);
-            System.out.println("Liczba porównań między kluczami: " + comparisonCounter);
-            System.out.println("Liczba zamian kluczy: " + switchesCounter);
         }
+
+
+        System.out.println("Liczba porównań między kluczami: " + comparisonCounter);
+        System.out.println("Liczba zamian kluczy: " + switchesCounter);
+
+        if(num == 1) {
+            array.add(comparisonCounter);
+            array.add(switchesCounter);
+        }
+
         System.out.println("Czy jest posortowana? " + checkIfSorted(t));
         setComparisonCounterToZero();
         setSwitchesCounterToZero();
@@ -113,11 +125,10 @@ public class InsertionSort {
         }
         return true;
     }
-    public int getComparisonCounter() {
-        return comparisonCounter;
+
+    public ArrayList<Integer> getArray() {
+        return array;
     }
 
-    public int getSwitchesCounter() {
-        return switchesCounter;
-    }
+
 }
