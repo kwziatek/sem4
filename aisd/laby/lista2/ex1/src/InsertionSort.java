@@ -2,29 +2,34 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class InsertionSort {
+    int comparisonCounter = 0;
+    int switchesCounter = 0;
     public static void main(String[] args) {
+        InsertionSort insertionSort = new InsertionSort();
         Scanner sc = new Scanner(System.in);
         int num = sc.nextInt();
         System.out.println("INSERTION SORT");
 
         for(int i = 1; i <= 3; i++) {
-            generateSolution(i, num);
+            insertionSort.generateSolution(i, num);
         }
     }
 
-    public static void insertionSort(int[] arr) {
+    public void insertionSort(int[] arr) {
         if (arr == null || arr.length <= 1) {
             return;
         }
+
         for (int i = 1; i < arr.length; i++) {
             int j = i;
-            while (j > 0 && arr[j] < arr[j - 1]) {
-                int temp = arr[j];
-                arr[j] = arr[j - 1];
-                arr[j - 1] = temp;
+            increaseComparisonCounter();
+            while (j > 0 && compare(arr[j], arr[j - 1])) {
+                increaseComparisonCounter();
+                swap(arr, j);
+                increaseSwitchesCounter();
                 j--;
             }
-            if(arr.length < 40 && arr[0] >= 0) {
+            if(arr.length < 40) {
                 printArray(arr);
             }
         }
@@ -37,7 +42,7 @@ public class InsertionSort {
         System.out.println();
     }
 
-    public static void generateSolution(int num, int size) {
+    public void generateSolution(int num, int size) {
         NumbersGenerator ng = new NumbersGenerator();
         int [] t;
         if(num == 1) {
@@ -52,17 +57,67 @@ public class InsertionSort {
         } else {
             return;
         }
+        if(size < 40) {
+            int [] copy = Arrays.copyOf(t, size);
+            printArray(t);
+            System.out.println();
+            insertionSort(t);
+            System.out.println();
+            System.out.print("Wyjściowa tablica:   ");
+            printArray(copy);
+            System.out.print("Posortowana tablica: ");
+            printArray(t);
+            System.out.println();
+        } else {
+            insertionSort(t);
+            System.out.println("Liczba porównań między kluczami: " + comparisonCounter);
+            System.out.println("Liczba zamian kluczy: " + switchesCounter);
+        }
+        System.out.println("Czy jest posortowana? " + checkIfSorted(t));
+        setComparisonCounterToZero();
+        setSwitchesCounterToZero();
 
-        int [] copy = Arrays.copyOf(t, size);
-        printArray(t);
-        System.out.println();
-        insertionSort(t);
-        System.out.println();
-        System.out.print("Wyjściowa tablica:   ");
-        printArray(copy);
-        System.out.print("Posortowana tablica: ");
-        printArray(t);
-        System.out.println();
     }
 
+    public void increaseComparisonCounter() {
+        comparisonCounter++;
+    }
+
+    public void increaseSwitchesCounter() {
+        switchesCounter++;
+    }
+
+    public void setComparisonCounterToZero() {
+        comparisonCounter = 0;
+    }
+
+    public void setSwitchesCounterToZero() {
+        switchesCounter = 0;
+    }
+
+    public static void swap(int [] arr, int x) {
+        int temp = arr[x];
+        arr[x] = arr[x - 1];
+        arr [x - 1] = temp;
+    }
+
+    public static boolean compare(int a, int b) {
+        return a < b;
+    }
+
+    public static boolean checkIfSorted(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] > arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public int getComparisonCounter() {
+        return comparisonCounter;
+    }
+
+    public int getSwitchesCounter() {
+        return switchesCounter;
+    }
 }

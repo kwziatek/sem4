@@ -24,7 +24,7 @@ public class NumbersGenerator {
         for (int i = 0; i < array.length; i++) {
             array[i] = -array[i];
         }
-        InsertionSort.insertionSort(array);
+        Arrays.sort(array);
         for (int i = 0; i < array.length; i++) {
             array[i] = -array[i];
         }
