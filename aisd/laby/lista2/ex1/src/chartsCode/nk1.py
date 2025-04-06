@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Input arrays
 array1 = [33, 26, 87, 69, 257, 232, 351, 315, 611, 565]
@@ -66,14 +67,14 @@ custom_labels = [
     "QuickSort - Liczba porównań",  # First chart from array2
     "QuickSort - Liczba przestawień", # Second chart from array2
     "HybridSort - Liczba porównań",    # First chart from array3
-    "HybridSort - Liczba przestawień"  # Second chart from array3
+    "HybridSort - Liczba przestwień"  # Second chart from array3
 ]
 
 label_counter = 0  # Track which name to use
 
 for idx, (x, (y1, y2)) in enumerate(data):
     # Plot first chart from current array
-    plt.plot(x, y1/x, 
+    plt.plot(x, y1, 
              label=custom_labels[label_counter],  # Use custom name
              **styles[2*idx])
     label_counter += 1
@@ -84,7 +85,7 @@ for idx, (x, (y1, y2)) in enumerate(data):
              **styles[2*idx+1])
     label_counter += 1
 
-plt.title('k = 1')
+plt.title('Liczba porównań i przestawień, k = 1')
 plt.xlabel('X Values (log scale)')
 plt.ylabel('Y Values (log scale)')
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
