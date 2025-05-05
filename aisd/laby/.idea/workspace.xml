@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bfb56b3e-ad25-4a48-aa4d-35d977874129" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ball.adb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ex1.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ex3.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ex5.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.adb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.ali" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/laptop" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/myex1-nowg.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/myex1.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/trump" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2wMOGIl7d14jXlu8l4SEIvUnViA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
+      <window_info id="Commit" order="1" weight="0.25" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" order="0" />
+      <window_info anchor="bottom" id="Problems" order="1" />
+      <window_info anchor="bottom" id="Problems View" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="3" />
+      <window_info anchor="bottom" id="Services" order="4" />
+      <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
+      <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
+      <window_info anchor="right" id="Database" order="2" weight="0.25" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.59" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bfb56b3e-ad25-4a48-aa4d-35d977874129" name="Changes" comment="" />
+      <created>1745847879590</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1745847879590</updated>
+      <workItem from="1745847881357" duration="226000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
