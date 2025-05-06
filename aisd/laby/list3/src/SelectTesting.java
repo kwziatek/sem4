@@ -1,10 +1,11 @@
 import java.util.*;
 
-public class Select {
+public class SelectTesting {
     Comparison comparison;
     Swap swap;
     int k;
     int[] arr;
+    int smallArrSize;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -15,7 +16,7 @@ public class Select {
 //        int[] arr = numbersGenerator.generateRandomArray(n);
 //        int[] initialArray = Arrays.copyOf(arr, arr.length);
 //
-//        Select select = new Select(k, arr);
+//        SelectTesting select = new SelectTesting(k, arr);
 //        int res = select.select(arr, 1, n, k);
 //        select.printResults();
 //
@@ -33,19 +34,20 @@ public class Select {
                 int n = i;
                 int k = numbersGenerator.randomNumber(n);
                 int[] array = numbersGenerator.generateRandomArray(n);
-                Select select = new Select(k, array);
-                select.select(array, 1, array.length - 1, k);
-                select.printDataForCharts(n);
+                SelectTesting randomSelect = new SelectTesting(k, array, 9);
+                randomSelect.select(array, 1, array.length - 1, k);
+                randomSelect.printDataForCharts(n);
             }
         }
 
     }
 
-    public Select(int k, int[] arr) {
+    public SelectTesting(int k, int[] arr, int size) {
         swap = new Swap();
         comparison = new Comparison();
         this.k = k;
         this.arr = arr;
+        smallArrSize = size;
     }
 
     public int select(int[] arr, int low, int high, int k) {
@@ -58,7 +60,7 @@ public class Select {
         int[] m = findingMedians(arr, low, high);
 //        System.out.println("mediany :");
 //        printArray(m);
-        int x = select(m, 1, ceilDiv(high - low + 1,5), ceilDiv(high - low + 1, 5)/2);
+        int x = select(m, 1, ceilDiv(high - low + 1,smallArrSize), ceilDiv(high - low + 1, smallArrSize)/2);
         int r = partition(arr, low, high, x);
 //        System.out.println("pivot " + x +  " pozycja " + r);
         int count = r - low + 1;
@@ -89,10 +91,10 @@ public class Select {
     }
 
     public int[] findingMedians(int[] arr, int low, int high) {
-        List<Integer> listOfMedians = new ArrayList<>();
-        for(int i = low; i <= high; i += 5) {
-            List<Integer> smallList = new ArrayList<>();
-            for(int j = i; j < i + 5 && j <= high; j++) {
+        List<Integer> listOfMedians = new ArrayList<Integer>();
+        for(int i = low; i <= high; i += smallArrSize) {
+            List<Integer> smallList = new ArrayList<Integer>();
+            for(int j = i; j < i + smallArrSize && j <= high; j++) {
                 smallList.add(arr[j]);
             }
             smallList.sort(null);
