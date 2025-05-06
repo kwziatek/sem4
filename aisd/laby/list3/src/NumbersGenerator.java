@@ -7,7 +7,7 @@ public class NumbersGenerator {
 
     public int [] generateRandomArray(int size) {
         int [] array = new int[size + 1];
-        for (int i = 1; i < size; i++) {
+        for (int i = 1; i <= size; i++) {
             array[i] = secureRandom.nextInt(2 * size);
         }
         return array;
