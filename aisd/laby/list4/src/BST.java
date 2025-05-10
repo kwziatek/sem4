@@ -9,6 +9,7 @@ public class BST {
         this.root = root;
     }
 
+    //inserts recursively into BST, should be called with root and value that new node will take, creates node with that value
     public void insert(Node node, int k) {
         if(k <= node.getValue()) {
             if(node.getLeft() == null) {
@@ -27,12 +28,23 @@ public class BST {
         }
     }
 
+    //calls deleteNode if there is a node with value given as parameter, returns otherwise, helper function to make code clearer
     public void delete(int value) {
         Node node = searchNode(root, value);
         if(node == null) {
             return;
         }
+        deleteNode(node);
+    }
+
+    //recursively deletes Node: finds successor of a Node and takes it's value, then calls this function on successor
+    //work easier when either/both children are null
+    public void deleteNode(Node node) {
         if(node.getLeft() == null && node.getRight() == null) {
+            if(node.getParent() == null) {
+                root = null;
+                return;
+            }
             Node parent = node.getParent();
             if(parent.getLeft() == node) {
                 parent.setLeft(null);
@@ -42,10 +54,35 @@ public class BST {
         } else if(node.getLeft() != null && node.getRight() != null) {
             Node successor = findSuccessor(node);
             node.setValue(successor.getValue());
-            //to be implemented
+            deleteNode(successor);
+        } else {
+            if(node == root) {
+                if(root.getLeft() != null) {
+                    root = root.getLeft();
+                    root.setParent(null);
+                } else {
+                    root = root.getRight();
+                    root.setParent(null);
+                }
+            } else if(node.getLeft() != null) {
+                if(node.getParent().getLeft() == node) {
+                    node.getParent().setLeft(node.getLeft());
+                } else {
+                    node.getParent().setRight(node.getLeft());
+                }
+                node.getLeft().setParent(node.getParent());
+            } else {
+                if(node.getParent().getLeft() == node) {
+                    node.getParent().setLeft(node.getRight());
+                } else {
+                    node.getParent().setRight(node.getRight());
+                }
+                node.getRight().setParent(node.getParent());
+            }
         }
     }
 
+    //recursively counts height
     public int height(Node node) {
         if(node == null) {
             return -1;
@@ -57,6 +94,7 @@ public class BST {
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
+    //searches recursively if there is a node with given value, should be started from root
     public Node searchNode(Node node, int value) {
         if(node == null) {
             return null;
@@ -70,6 +108,7 @@ public class BST {
         }
     }
 
+    //prints tree nodes in order (asc)
     public void inorderTreeWalk(Node node) {
         if(node.getLeft() != null) {
             inorderTreeWalk(node.getLeft());
@@ -80,6 +119,7 @@ public class BST {
         }
     }
 
+    //finds successor, returns null if there is none
     public Node findSuccessor(Node node) {
         if(node.getRight() != null) {
             node = node.getRight();
@@ -97,69 +137,26 @@ public class BST {
         }
     }
 
-    // Helper function to perform inorder traversal and
-    // populate the 2D matrix
-    private void inorder(Node node, int row, int col,
-                        int height,
-                        List<List<String>> ans) {
+    //calls printHelper to print tree
+    public void printTree(Node node) {
+        printHelper(node, "", true);
+    }
+
+    private void printHelper(Node node, String indent, boolean isRight) {
         if (node == null) {
             return;
         }
-
-        // Calculate offset for child positions
-        int offset = (int) Math.pow(2, height - row - 1);
-
-        // Traverse the left subtree
-        if (node.getLeft() != null) {
-            inorder(node.getLeft(), row + 1, col - offset,
-                    height, ans);
+        // Process right child first
+        printHelper(node.getRight(), indent + "    ", true);
+        // Print current node
+        System.out.print(indent);
+        if (indent.isEmpty()) {
+            // Root node
+            System.out.println(node.getValue());
+        } else {
+            System.out.println(isRight ? " /-- " + node.getValue() : " \\-- " + node.getValue());
         }
-
-        // Place the current node's value in the matrix
-        ans.get(row).set(col, String.valueOf(node.getValue()));
-
-        // Traverse the right subtree
-        if (node.getRight() != null) {
-            inorder(node.getRight(), row + 1, col + offset,
-                    height, ans);
-        }
-    }
-
-    // Function to convert the binary tree to a 2D matrix
-    public List<List<String>> treeToMatrix(Node node) {
-
-        // Find the height of the tree
-        int height = this.height(node);
-
-        // Rows are height + 1; columns are 2^(height+1) - 1
-        int rows = height + 1;
-        int cols = (int) Math.pow(2, height + 1) - 1;
-
-        // Initialize 2D matrix with empty strings
-        List<List<String>> ans = new ArrayList<>();
-        for (int i = 0; i < rows; i++) {
-            List<String> row = new ArrayList<>(Collections
-                    .nCopies(cols, ""));
-            ans.add(row);
-        }
-
-        // Populate the matrix using inorder traversal
-        inorder(node, 0, (cols - 1) / 2, height, ans);
-
-        return ans;
-    }
-
-    // Function to print a 2D matrix
-    public void print2DArray(List<List<String>> arr) {
-        for (List<String> row : arr) {
-            for (String cell : row) {
-                if (cell.isEmpty()) {
-                    System.out.print(" ");
-                } else {
-                    System.out.print(cell);
-                }
-            }
-            System.out.println();
-        }
+        // Process left child
+        printHelper(node.getLeft(), indent + "    ", false);
     }
 }
