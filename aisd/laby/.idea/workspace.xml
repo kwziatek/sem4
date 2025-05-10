@@ -2,20 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bfb56b3e-ad25-4a48-aa4d-35d977874129" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ball.adb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ex1.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ex3.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/ex5.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.adb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.ali" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/hello.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/laptop" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/myex1-nowg.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/myex1.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/list1/trump" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex2/out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex4/out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex4/random_seeds.ali" beforeDir="false" afterPath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex4/random_seeds.ali" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex4/travelers_synchronized.ali" beforeDir="false" afterPath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex4/travelers_synchronized.ali" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../wspolbiezne/mk1/list1/ex5/test" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +16,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2wMOGIl7d14jXlu8l4SEIvUnViA" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,6 +27,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "nodejs_package_manager_path": "npm",
@@ -77,6 +69,7 @@
       <option name="presentableId" value="Default" />
       <updated>1745847879590</updated>
       <workItem from="1745847881357" duration="226000" />
+      <workItem from="1746830696938" duration="25000" />
     </task>
     <servers />
   </component>
