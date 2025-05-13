@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Układanka Obrazkowa</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        canvas {
+            border: 1px solid #000;
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            touch-action: manipulation;
+        }
+        #controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .highlight {
+            outline: 3px solid yellow;
+        }
+    </style>
+</head>
+<body>
+<h1>Układanka Obrazkowa</h1>
+<div id="controls">
+    <input type="file" id="imageLoader" accept="image/*">
+    <label>Liczba kolumn:
+        <input type="number" id="gridCols" min="2" max="10" value="3">
+    </label>
+    <label>Liczba wierszy:
+        <input type="number" id="gridRows" min="2" max="10" value="3">
+    </label>
+    <button onclick="startGame()">Rozpocznij grę</button>
+    <button onclick="resetGame()">Resetuj</button>
+</div>
+<canvas id="puzzleCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('puzzleCanvas');
+    const ctx = canvas.getContext('2d');
+    const imageLoader = document.getElementById('imageLoader');
+    let image = new Image();
+    let gridCols = 3;
+    let gridRows = 3;
+    let pieces = [];
+    let emptyTile = {x: 0, y: 0};
+    let tileWidth, tileHeight;
+    let imgLoaded = false;
+
+    image.src = localStorage.getItem("imageData") || 'https://upload.wikimedia.org/wikipedia/commons/3/3f/JPEG_example_flower.jpg';
+    image.onload = () => {
+        imgLoaded = true;
+        restoreGame();
+    };
+
+    imageLoader.addEventListener('change', function (e) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            image.onload = () => {
+                imgLoaded = true;
+                drawInitial();
+                localStorage.setItem("imageData", image.src);
+            };
+            image.src = event.target.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
+    function adjustCanvasSize() {
+        const size = Math.min(window.innerWidth * 0.9, 600);
+        canvas.width = size;
+        canvas.height = size;
+    }
+
+    function drawInitial() {
+        adjustCanvasSize();
+        gridCols = parseInt(document.getElementById('gridCols').value);
+        gridRows = parseInt(document.getElementById('gridRows').value);
+        tileWidth = canvas.width / gridCols;
+        tileHeight = canvas.height / gridRows;
+        createPieces();
+        shufflePieces();
+        drawPuzzle();
+        saveGame();
+    }
+
+    function createPieces() {
+        pieces = [];
+        for (let y = 0; y < gridRows; y++) {
+            for (let x = 0; x < gridCols; x++) {
+                pieces.push({x, y});
+            }
+        }
+        emptyTile = {x: 0, y: 0};
+    }
+
+    function shufflePieces() {
+        for (let i = 0; i < 1000; i++) {
+            const neighbors = getMovableTiles();
+            const move = neighbors[Math.floor(Math.random() * neighbors.length)];
+            swapTiles(emptyTile, move);
+        }
+    }
+
+    function drawPuzzle() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach((tile, index) => {
+            const px = index % gridCols;
+            const py = Math.floor(index / gridCols);
+            if (tile.x === 0 && tile.y === 0) {
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(px * tileWidth, py * tileHeight, tileWidth, tileHeight);
+            } else {
+                ctx.drawImage(
+                    image,
+                    tile.x * (image.width / gridCols),
+                    tile.y * (image.height / gridRows),
+                    image.width / gridCols,
+                    image.height / gridRows,
+                    px * tileWidth,
+                    py * tileHeight,
+                    tileWidth,
+                    tileHeight
+                );
+            }
+        });
+    }
+
+    function getTileAt(x, y) {
+        const i = y * gridCols + x;
+        return pieces[i];
+    }
+
+    function getMovableTiles() {
+        const moves = [];
+        const dirs = [
+            {x: 0, y: -1},
+            {x: 1, y: 0},
+            {x: 0, y: 1},
+            {x: -1, y: 0},
+        ];
+        dirs.forEach(d => {
+            const nx = emptyTile.x + d.x;
+            const ny = emptyTile.y + d.y;
+            if (nx >= 0 && ny >= 0 && nx < gridCols && ny < gridRows) {
+                moves.push({x: nx, y: ny});
+            }
+        });
+        return moves;
+    }
+
+    function getTileCoord(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = Math.floor((clientX - rect.left) / tileWidth);
+        const y = Math.floor((clientY - rect.top) / tileHeight);
+        return {x, y};
+    }
+
+    function moveTile(e) {
+        const {x, y} = getTileCoord(e);
+        const neighbors = getMovableTiles();
+        if (neighbors.some(p => p.x === x && p.y === y)) {
+            swapTiles(emptyTile, {x, y});
+            drawPuzzle();
+            saveGame();
+            if (isSolved()) {
+                localStorage.removeItem("puzzleState");
+                setTimeout(() => alert("Gratulacje! Ułożyłeś układankę!"), 100);
+            }
+        }
+    }
+
+    function swapTiles(a, b) {
+        const ai = a.y * gridCols + a.x;
+        const bi = b.y * gridCols + b.x;
+        const temp = pieces[ai];
+        pieces[ai] = pieces[bi];
+        pieces[bi] = temp;
+        emptyTile = {...b};
+    }
+
+    function isSolved() {
+        for (let y = 0; y < gridRows; y++) {
+            for (let x = 0; x < gridCols; x++) {
+                const tile = getTileAt(x, y);
+                if (tile.x !== x || tile.y !== y) {
+                    if (x !== 0 || y !== 0) return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function saveGame() {
+        const state = {
+            gridCols,
+            gridRows,
+            pieces,
+            emptyTile
+        };
+        localStorage.setItem("puzzleState", JSON.stringify(state));
+    }
+
+    function restoreGame() {
+        const saved = localStorage.getItem("puzzleState");
+        if (!saved) {
+            drawInitial();
+            return;
+        }
+        adjustCanvasSize();
+        const state = JSON.parse(saved);
+        gridCols = state.gridCols;
+        gridRows = state.gridRows;
+        pieces = state.pieces;
+        emptyTile = state.emptyTile;
+        tileWidth = canvas.width / gridCols;
+        tileHeight = canvas.height / gridRows;
+        drawPuzzle();
+    }
+
+    function startGame() {
+        if (!imgLoaded) return;
+        drawInitial();
+    }
+
+    function resetGame() {
+        localStorage.removeItem("puzzleState");
+        drawInitial();
+    }
+
+    canvas.addEventListener('mousemove', e => {
+        if (!e.touches) highlightTile(e);
+    });
+
+    canvas.addEventListener('click', moveTile);
+    canvas.addEventListener('touchstart', moveTile);
+
+    function highlightTile(e) {
+        drawPuzzle();
+        const {x, y} = getTileCoord(e);
+        const neighbors = getMovableTiles();
+        if (neighbors.some(p => p.x === x && p.y === y)) {
+            ctx.strokeStyle = 'yellow';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        if (imgLoaded) restoreGame();
+    });
+</script>
+</body>
+</html>

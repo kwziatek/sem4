@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8499a723-0168-4b5a-baaf-180785fdae27" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/deepseek_generated.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/interests.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/photos.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/prism.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/prism.css:Zone.Identifier" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/prism.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/prism.js:Zone.Identifier" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/project-details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/projects.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex1/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex2/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex2/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex2/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex2/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex2/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lista3/ex2/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/jsLibraryMappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_0293.JPG" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_0293.JPG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_0907.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_0907.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_1235.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_1235.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_1239.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_1239.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_1305.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_1305.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_1333.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_1333.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_1387.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_1387.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/IMG_3305.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/IMG_3305.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/interests.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/main_image.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/main_image.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/photos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/project-details.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/projects.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/recantgle_cutting.png" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/recantgle_cutting.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deepseek_generated/sumy_częściowe.png" beforeDir="false" afterPath="$PROJECT_DIR$/lista3/ex1/sumy_częściowe.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lista1/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/lista1/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/lista3/ex2" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2x2VfwgDa90irdxvNeYgu2ys90q" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "//wsl.localhost/Ubuntu-24.04/home/wztq/Studia/sem4/www/deepseek_generated",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.25659.40" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8499a723-0168-4b5a-baaf-180785fdae27" name="Changes" comment="" />
+      <created>1747136261694</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747136261694</updated>
+      <workItem from="1747136262762" duration="8820000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

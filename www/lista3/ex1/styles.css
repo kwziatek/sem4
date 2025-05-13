@@ -1,4 +1,32 @@
 /* Mobile First */
+/* Hamburger button */
+.hamburger {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #EFDFBB;
+  display: block;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Hide menu by default on mobile */
+header nav ul {
+  transition: max-height 0.3s ease;
+  overflow: hidden;
+  max-height: 0;
+}
+header nav ul.open {
+  max-height: 500px; /* big enough to show all items */
+}
+
+/* Show nav normally on tablet+ */
+@media (min-width: 768px) {
+  #menu-toggle { display: none; }
+  header nav ul { max-height: none; display: flex; }
+}
+
 h1 {
   text-align: center;
 }
