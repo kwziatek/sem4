@@ -1,0 +1,39 @@
+karol@karol-ThinkPad-P52:~/Studies/sem4/wspolbiezne/mk1/list1/ex1$ ls
+ex1.go
+karol@karol-ThinkPad-P52:~/Studies/sem4/wspolbiezne/mk1/list1/ex1$ go run ex1.go > out1
+karol@karol-ThinkPad-P52:~/Studies/sem4/wspolbiezne/mk1/list1/ex1$ shasum out1
+982d3e7cfd37f8f01b8fee07dff7de2b942c7a6a  out1
+karol@karol-ThinkPad-P52:~/Studies/sem4/wspolbiezne/mk1/list1/ex1$ svn import -m "shasum" out1 https://repo.cs.pwr.edu.pl/279734-dir/mk1/list1/ex1/                                  
+svn: E145000: Wymagane podanie nazwy obiektu podczas importowania pliku
+karol@karol-ThinkPad-P52:~/Studies/sem4/wspolbiezne/mk1/list1/ex1$ svn import -m "shasum" out1 https://repo.cs.pwr.edu.pl/279734-dir/mk1/list1/ex1/out1
+Dodawanie       out1
+Committing transaction...
+Zatwierdzona wersja 8.
+karol@karol-ThinkPad-P52:~/Studies/sem4/wspolbiezne/mk1/list1/ex1$ tmux capture-pane -p -S'-' -E'-' -J > my-log
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
