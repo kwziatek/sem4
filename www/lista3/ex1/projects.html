@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moje Projekty</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>Moje Projekty</h1>
+  <button id="menu-toggle" class="hamburger" aria-label="Menu">
+    &#9776;
+  </button>
+  <nav>
+    <ul>
+      <li><a href="index.html">Strona Główna</a></li>
+      <li><a href="projects.html">Projekty</a></li>
+      <li><a href="project-details.html">Fragmenty kodu</a></li>
+      <li><a href="interests.html">Zainteresowania</a></li>
+      <li><a href="photos.html">Zdjęcia</a> </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Wybrane Projekty</h2>
+    <ul>
+      <h3><li>Chińskie warcaby</li></h3>
+      <p>
+        Projekt został zrealizowany w ramach kursu: technologie programowania.
+        Wraz z ziomkiem z kierunku stworzyliśmy aplikację desktopową opartą o socketową technologie klient-serwer,
+        która umożliwiała klientom tworzenie rozgrywek, dołączanie do nich i rozgrywanie partii.
+        Dostępne były dwa różne tryby gry oraz możliwość dodania bota do rozgrywki.
+        Aplikacja miała swój interfejs graficzny oraz bazę danych, przy pomocy której można była zapisywać partie i je odtwarzać.
+        Tutaj został użyty framework Spring Boot.
+        Poniżej znajduje się link do repozytorium projektu oraz opis zasad gry(wiki).
+      </p>
+      <p>
+        <a href="https://github.com/TrollYuck/ChineseCheckers">Repozytorium na githubie</a>
+      </p>
+      <p>
+        <a href="https://en.wikipedia.org/wiki/Chinese_checkers">Opis zasad</a>
+      </p>
+
+      <h3><li>Migające kolorowe kwadraty</li></h3>
+      <p>
+        Projekt został zrealizowany w ramach kursu: programowanie obiektowe w Javie.
+        Jest to aplikacja desktopowa z GUI, która, wykorzystując wielowątkowość, wyświetla kolorowe kwadraty-ich ilość w pionie i poziomie jest podana na wejściu,
+        i z prawdopodobieństwem p (podanym również na wejściu) zmienia kolor na losowy, a z prawdopodobieństwem 1-p zmienia kolor na średnią arytmetyczną z kolorów sąsiadujących.
+      </p>
+      <p>
+        <a href="">Tu będzie link do repo</a>
+      </p>
+      <h3><li>Własny paint</li></h3>
+      <p>
+        Projekt został stworzony w ramach kursu: programowanie obiektowe w Javie.
+        Jest to również aplikacja desktopowa z GUI, która umożliwia rysowanie kształtów takich jak: prosta, kwadrat, koło czy trójkąt na ekranie.
+        Co więcej, arcydzieła można lokalnie zapisywać i wczytywać z pliku, kształty można rotować, usuwać i zmieniać ich wielkość oraz kolor.
+      </p>
+      <p>
+        <a href="">Tu będzie link do repo</a>
+      </p>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 Moje Portfolio</p>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
