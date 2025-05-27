@@ -1,0 +1,97 @@
+1. User Management
+-Register a new user with valid data.
+curl -v -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username": "testuser", "password": "test123", "role": "user"}'
+-(Response) HTTP 201, JSON response with user details.
+
+-Attempt to register a user with an existing username
+curl -v -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username": "testuser", "password": "test123", "role": "user"}'
+-(Response) HTTP 400, error message about unique constraint
+
+-Attempt to register a user without a password
+curl -v -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username": "newuser"}'
+-(Response) HTTP 400, error message about missing password
+
+-Log in with valid credentials to obtain a JWT token
+curl -v -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username": "testuser", "password": "test123"}'
+-(Response) HTTP 200, JSON response with JWT token
+
+-Save user token for later
+USER_TOKEN=$(curl -s -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username": "testuser", "password": "test123"}' | jq -r '.token')
+
+-Attempt to log in with an incorrect password
+curl -v -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username": "testuser", "password": "wrongpass"}'
+-(Response) HTTP 401, error message about invalid credentials
+
+2. Authors Management
+Register an admin user and log in to obtain an admin JWT token (needed for admin-only endpoints).
+curl -v -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username": "adminuser", "password": "admin123", "role": "admin"}'
+curl -v -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username": "adminuser", "password": "admin123"}'
+
+Saving admin token
+ADMIN_TOKEN=$(curl -s -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username": "adminuser", "password": "admin123"}' | jq -r '.token')
+
+Create author (only admin)
+curl -v -X POST http://localhost:3000/authors -H "Content-Type: application/json" -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "J.K. Rowling", "birthYear": 1965}'
+
+Attempt to create an author with an invalid JWT token
+curl -v -X POST http://localhost:3000/authors -H "Content-Type: application/json" -H "Authorization: Bearer invalid_token" -d '{"name": "J.K. Rowling", "birthYear": 1965}'
+
+Create Author as Non-Admin (Authorization Error)
+curl -v -X POST http://localhost:3000/authors -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"name": "J.K. Rowling", "birthYear": 1965}'
+
+Retrieve all authors (no authentication required)
+curl -v http://localhost:3000/authors
+
+Delete Author (Admin Only)
+curl -v -X DELETE http://localhost:3000/authors/1 -H "Authorization: Bearer $ADMIN_TOKEN"
+
+Delete Non-Existent Author (Edge Case)
+curl -v -X DELETE http://localhost:3000/authors/999 -H "Authorization: Bearer $ADMIN_TOKEN"
+
+3. Books Management
+Create a book as an admin
+curl -v -X POST http://localhost:3000/books -H "Content-Type: application/json" -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"title": "Harry Potter", "authorId": 1, "publicationYear": 1997, "isbn": "978-0747532699"}'
+-Response(Doesn't work - no author with id 1)
+
+Create author and then book
+curl -v -X POST http://localhost:3000/authors -H "Content-Type: application/json" -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "J.K. Rowling", "birthYear": 1965, "id": 1}'
+curl -v -X POST http://localhost:3000/books -H "Content-Type: application/json" -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"title": "Harry Potter", "authorId": 1, "publicationYear": 1997, "isbn": "978-0747532699"}'
+
+Create a book with a missing title
+curl -v -X POST http://localhost:3000/books -H "Content-Type: application/json" -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"authorId": 1, "publicationYear": 1997}'
+
+Get Books with Pagination, Filtering and Sorting
+curl -v "http://localhost:3000/books?page=1&limit=5&sort=publicationYear&order=DESC&title=Harry"
+
+Request a page number beyond available data
+curl -v "http://localhost:3000/books?page=999&limit=5"
+
+Delete Book (Admin Only)
+curl -v -X DELETE http://localhost:3000/books/3 -H "Authorization: Bearer $ADMIN_TOKEN"
+
+4. Reviews Management
+Create a review as a user
+curl -v -X POST http://localhost:3000/reviews -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"bookId": 1, "rating": 5, "comment": "Great book!"}'
+-(Response) No book with id 1
+
+Create book with id 1 and then review
+curl -v -X POST http://localhost:3000/books -H "Content-Type: application/json" -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"title": "Harry Potter", "authorId": 1, "publicationYear": 1997, "isbn": "978-0747532699"}'
+curl -v -X POST http://localhost:3000/reviews -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"bookId": 4, "rating": 5, "comment": "Great book!"}'
+
+Get Reviews as User
+curl -v http://localhost:3000/reviews -H "Authorization: Bearer $USER_TOKEN"
+
+Get Reviews as Admin
+curl -v http://localhost:3000/reviews -H "Authorization: Bearer $ADMIN_TOKEN"
+
+Delete Review as Owner
+curl -v -X DELETE http://localhost:3000/reviews/2 -H "Authorization: Bearer $USER_TOKEN"
+
+Delete Review as Non-Owner (Authorization Error)
+curl -v -X POST http://localhost:3000/reviews -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"id": 1, "bookId": 4, "rating": 5, "comment": "Great book!"}'
+curl -v -X POST http://localhost:3000/register -H "Content-Type: application/json" -d '{"username": "otheruser", "password": "other123", "role": "user"}'
+OTHER_TOKEN=$(curl -s -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username": "otheruser", "password": "other123"}' | jq -r '.token')
+curl -v -X DELETE http://localhost:3000/reviews/1 -H "Authorization: Bearer $OTHER_TOKEN"
+
+
+
