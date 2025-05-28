@@ -1,7 +1,12 @@
-
 import networkx as nx
 import numpy as np
 import random
+
+def update_matrix(N, delta = 10):
+    for i in range(20):
+        for j in range(20):
+            if i != j:
+                N[i][j] += delta
 
 def create_network():
     G = nx.Graph()
@@ -103,31 +108,38 @@ def calculate_delay(G, N, m):
     T = (1 / G_total) * delay_sum
     return T
 
-def simulate_network_reliability(G, N, p, T_max, m, num_simulations=1000):
+def simulate_network_reliability(G, N, p, T_max, m, num_simulations=10, num_matrix_additions=10):
     """
     Estimates network reliability using Monte Carlo simulation.
     Returns the probability that T < T_max in a connected network.
     """
-    success_count = 0
-    for _ in range(num_simulations):
-        G_sub = G.copy()
-        edges_to_remove = []
+    delta = 500
+    reliability = 0
 
-        for u, v in G.edges:
-            if random.random() > p:
-                edges_to_remove.append((u, v))
+    for addding_delta in range(num_matrix_additions):
+        success_count = 0
 
-        G_sub.remove_edges_from(edges_to_remove)
+        for simulations in range(num_simulations):
+            G_sub = G.copy()
+            edges_to_remove = []
 
-        if nx.is_connected(G_sub):
-            calculate_actual_flow(G_sub, N)
+            for u, v in G.edges:
+                if random.random() > p:
+                    edges_to_remove.append((u, v))
 
-        if nx.is_connected(G_sub):
-            T = calculate_delay(G_sub, N, m)
-            if T < T_max:
-                success_count += 1
+            G_sub.remove_edges_from(edges_to_remove)
 
-    reliability = success_count / num_simulations
+            if nx.is_connected(G_sub):
+                calculate_actual_flow(G_sub, N)
+
+            if nx.is_connected(G_sub):
+                T = calculate_delay(G_sub, N, m)
+                if T < T_max:
+                    success_count += 1
+
+        reliability = success_count / num_simulations
+        print(f"Reliability after adding {addding_delta * delta} to each matrix value: {reliability}")
+        update_matrix(N, delta)
 
     return reliability
 

@@ -1,7 +1,15 @@
-
 import networkx as nx
 import numpy as np
 import random
+
+def update_capacity(G, delta=10000000):
+    ring_edges = [(i, i+1) for i in range(1, 20)] + [(20, 1)]
+
+    for u, v in G.edges:
+        if (u, v) in ring_edges or (v, u) in ring_edges:
+            G.edges[u, v]['capacity'] += delta
+        else:
+            G.edges[u, v]['capacity'] += delta
 
 def create_network():
     G = nx.Graph()
@@ -17,9 +25,9 @@ def create_network():
 
     for u, v in G.edges:
         if (u, v) in ring_edges or (v, u) in ring_edges:
-            G.edges[u, v]['capacity'] = 200000000
+            G.edges[u, v]['capacity'] = 25000000
         else:
-            G.edges[u, v]['capacity'] = 300000000
+            G.edges[u, v]['capacity'] = 60000000
         G.edges[u, v]['actual_flow'] = 0
 
     N = np.zeros((20, 20), dtype=int)
@@ -103,47 +111,52 @@ def calculate_delay(G, N, m):
     T = (1 / G_total) * delay_sum
     return T
 
-def simulate_network_reliability(G, N, p, T_max, m, num_simulations=1000):
+def simulate_network_reliability(G, N, p, T_max, m, num_simulations=25, num_graph_addiitons=20):
     """
     Estimates network reliability using Monte Carlo simulation.
     Returns the probability that T < T_max in a connected network.
     """
-    success_count = 0
-    for _ in range(num_simulations):
-        G_sub = G.copy()
-        edges_to_remove = []
+    delta = 3000000
+    reliability = 0
 
-        for u, v in G.edges:
-            if random.random() > p:
-                edges_to_remove.append((u, v))
+    for addding_delta in range(num_graph_addiitons):
+        success_count = 0
 
-        G_sub.remove_edges_from(edges_to_remove)
+        for simulations in range(num_simulations):
+            G_sub = G.copy()
+            edges_to_remove = []
 
-        if nx.is_connected(G_sub):
-            calculate_actual_flow(G_sub, N)
+            for u, v in G.edges:
+                if random.random() > p:
+                    edges_to_remove.append((u, v))
 
-        if nx.is_connected(G_sub):
-            T = calculate_delay(G_sub, N, m)
-            if T < T_max:
-                success_count += 1
+            G_sub.remove_edges_from(edges_to_remove)
 
-    reliability = success_count / num_simulations
+            if nx.is_connected(G_sub):
+                calculate_actual_flow(G_sub, N)
 
-    return reliability
+            if nx.is_connected(G_sub):
+                T = calculate_delay(G_sub, N, m)
+                if T < T_max:
+                    success_count += 1
+
+        reliability = success_count / num_simulations
+        print(f"Reliability after adding {addding_delta * delta} to each node capacity value: {reliability}")
+        update_capacity(G, delta)
 
 def main():
     G, N = create_network()
     p = 0.9
     T_max = 10
     m = 1000
-    num_simulations = 1000
+    num_simulations = 100
     reliability = simulate_network_reliability(G, N, p, T_max, m, num_simulations)
     print(f"Parameters:")
     print(f"  Edge non-failure probability (p): {p}")
     print(f"  Maximum delay (T_max): {T_max} s")
     print(f"  Average packet size (m): {m} bits")
     print(f"  Number of simulations: {num_simulations}")
-    print(f"Estimated network reliability: {reliability:.4f}")
+    print(f"Estimated network reliability: {reliability}")
 
 if __name__ == "__main__":
     main()
