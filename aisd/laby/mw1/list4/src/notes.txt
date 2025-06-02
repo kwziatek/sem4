@@ -1,0 +1,6 @@
+SplayTree
+splay: makes chosen node the root of the tree
+insertion: works just like in BST, in the end splays inserted element
+deletion: finds element to be deleted, splays it(it becomes the root), splits its subtrees, finds max in left subtree, it becomes root
+joins tress
+height: exactly like in BST

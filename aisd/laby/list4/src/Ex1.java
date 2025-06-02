@@ -1,9 +1,11 @@
-public class Main {
+public class Ex1 {
     public static void main(String[] args) {
 
         BST bst = new BST(new Node(-1));
         int n = 30;
         insertSortedPermutation(n, bst);
+
+        System.out.println(bst.height(bst.root));
 
         deletePermutation(n, bst);
 

@@ -1,30 +1,41 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class BST {
+public class BSTExtended {
     Node root;
+    private long comparisonNumber;
+    private long readingNumber;
 
-    public BST(Node root) {
+    public BSTExtended(Node root) {
         this.root = root;
     }
 
-    //inserts recursively into BST, should be called with root and value that new node will take as parameter, creates node with that value
+    //inserts recursively into BST, should be called with root and value that new node will take, creates node with that value
     public void insert(Node node, int k) {
-        if(k <= node.getValue()) {
-            if(node.getLeft() == null) {
-                node.setLeft(new Node(k));
-                node.getLeft().setParent(node);
+        Node current = node;
+        Node parent = null;
+
+        // Traverse to find the correct position
+        while (current != null) {
+            parent = current;
+            readingNumber++;
+            if (k <= current.getValue()) {
+                comparisonNumber++;
+                current = current.getLeft();
             } else {
-                insert(node.getLeft(), k);
+                current = current.getRight();
             }
+        }
+
+        // Create new node and attach it to the parent
+        Node newNode = new Node(k);
+        newNode.setParent(parent);
+        readingNumber++;
+        comparisonNumber++;
+        if (k <= parent.getValue()) {
+            parent.setLeft(newNode);
         } else {
-            if(node.getRight() == null) {
-                node.setRight(new Node(k));
-                node.getRight().setParent(node);
-            } else {
-                insert(node.getRight(), k);
-            }
+            parent.setRight(newNode);
         }
     }
 
@@ -40,23 +51,30 @@ public class BST {
     //recursively deletes Node: finds successor of a Node and takes it's value, then calls this function on successor
     //work easier when either/both children are null
     public void deleteNode(Node node) {
+        readingNumber += 2;
         if(node.getLeft() == null && node.getRight() == null) {
             if(node.getParent() == null) {
                 root = null;
                 return;
             }
+
             Node parent = node.getParent();
+            readingNumber++;
+            comparisonNumber++;
+            readingNumber += 2;
             if(parent.getLeft() == node) {
                 parent.setLeft(null);
             } else {
                 parent.setRight(null);
             }
         } else if(node.getLeft() != null && node.getRight() != null) {
+            readingNumber += 2;
             Node successor = findSuccessor(node);
             node.setValue(successor.getValue());
             deleteNode(successor);
         } else {
             if(node == root) {
+                readingNumber += 3;
                 if(root.getLeft() != null) {
                     root = root.getLeft();
                     root.setParent(null);
@@ -65,47 +83,80 @@ public class BST {
                     root.setParent(null);
                 }
             } else if(node.getLeft() != null) {
+                readingNumber += 3;
                 if(node.getParent().getLeft() == node) {
                     node.getParent().setLeft(node.getLeft());
                 } else {
                     node.getParent().setRight(node.getLeft());
                 }
+                readingNumber++;
                 node.getLeft().setParent(node.getParent());
             } else {
+                readingNumber += 3;
                 if(node.getParent().getLeft() == node) {
                     node.getParent().setLeft(node.getRight());
                 } else {
                     node.getParent().setRight(node.getRight());
                 }
+                readingNumber++;
                 node.getRight().setParent(node.getParent());
             }
         }
     }
 
-    //recursively counts height
     public int height(Node node) {
-        if(node == null) {
-            return 0;
+        if (node == null) {
+            return -1;
         }
 
-        int leftHeight = height(node.getLeft());
-        int rightHeight = height(node.getRight());
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(node);
+        int height = 0;
 
-        return Math.max(leftHeight, rightHeight) + 1;
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size(); // Number of nodes at current level
+            height++; // Increment height for each level
+
+            // Process all nodes at the current level
+            for (int i = 0; i < levelSize; i++) {
+                Node current = queue.poll();
+
+                // Add left child to queue if it exists
+                readingNumber++;
+                if (current.getLeft() != null) {
+                    queue.offer(current.getLeft());
+                }
+                // Add right child to queue if it exists\
+                readingNumber++;
+                if (current.getRight() != null) {
+                    queue.offer(current.getRight());
+                }
+            }
+        }
+
+        return height;
     }
 
     //searches recursively if there is a node with given value, should be started from root
     public Node searchNode(Node node, int value) {
-        if(node == null) {
-            return null;
+        Node current = node;
+
+        while (current != null) {
+            comparisonNumber++;
+            if (current.getValue() == value) {
+                return current;
+            }
+            comparisonNumber++;
+            readingNumber++;
+            if (value < current.getValue()) {
+                current = current.getLeft();
+            } else {
+                current = current.getRight();
+            }
+            comparisonNumber++; // For the null check in the while condition
         }
-        if(node.getValue() == value) {
-            return node;
-        } else if(node.getValue() < value) {
-            return searchNode(node.getRight(), value);
-        } else {
-            return searchNode(node.getLeft(), value);
-        }
+
+        return null;
     }
 
     //prints tree nodes in order (asc)
@@ -121,15 +172,21 @@ public class BST {
 
     //finds successor, returns null if there is none
     public Node findSuccessor(Node node) {
+        readingNumber++;
         if(node.getRight() != null) {
+            readingNumber++;
             node = node.getRight();
             while(node.getLeft() != null) {
+                readingNumber += 2;
                 node = node.getLeft();
             }
             return node;
         } else {
             Node y = node.getParent();
+            readingNumber++;
             while(y != null && y.getRight() == node) {
+                readingNumber += 3;
+                comparisonNumber++;
                 node = y;
                 y = y.getParent();
             }
@@ -158,5 +215,21 @@ public class BST {
         }
         // Process left child
         printHelper(node.getLeft(), indent + "    ", false);
+    }
+
+    public void setComparisonNumber(int value) {
+        comparisonNumber = value;
+    }
+
+    public long getComparisonNumber() {
+        return comparisonNumber;
+    }
+
+    public void setReadingNumber(long value) {
+        readingNumber = value;
+    }
+
+    public long getReadingNumber() {
+        return readingNumber;
     }
 }
