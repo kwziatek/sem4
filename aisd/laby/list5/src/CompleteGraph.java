@@ -81,7 +81,7 @@ public class CompleteGraph {
         }
     }
 
-    public List<Integer> primsMST() {
+    public List<Integer> primMST() {
         List<Integer> result = new ArrayList<>();
         for(int i = 0; i < size; i++) {
             result.add(-1);
@@ -90,7 +90,7 @@ public class CompleteGraph {
         int root = 0;
         int currentNode = root;
         int counter = 1;
-        while(counter <= size) {
+        while(counter < size) {
             for(int i = 0; i < size; i ++) {
                 if(edges[currentNode][i] != 0 && result.get(i) == -1 && i != root) {
                     pq.add(new Edge(currentNode, i, edges[currentNode][i]));
@@ -115,7 +115,83 @@ public class CompleteGraph {
         return result;
     }
 
+    public List<List<Integer>> kruskalMST() {
+        List<Edge> listOfEdges = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        List<List<Integer>> parts = new ArrayList<>();
 
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                if (i < j) {
+                    listOfEdges.add(new Edge(i, j, edges[i][j]));
+                }
+            }
+        }
+//        for(Edge edge: listOfEdges) {
+//            System.out.println(edge.from + " " + edge.to);
+//        }
+        Collections.sort(listOfEdges);
+        int ptr = 0;
+        for(int i = 1; i < size; i++) {
+            while(true) {
+                Edge edge = listOfEdges.get(ptr);
+                ptr++;
+                if(!doesEdgeCreateCycle(parts, edge)) {
+//                    for(List<Integer> array : parts) {
+//                        for(Integer node: array) {
+//                            System.out.println(node);
+//                        }
+//                        System.out.println();
+//                    }
+                    List<Integer> toAdd = new ArrayList<>();
+                    toAdd.add(edge.from);
+                    toAdd.add(edge.to);
+                    result.add(toAdd);
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private boolean doesEdgeCreateCycle(List<List<Integer>> parts, Edge edge) {
+        int from = -1;
+        int to = -1;
+        for (int i = 0; i < parts.size(); i++) {
+            for (int node : parts.get(i)) {
+                if (node == edge.from) {
+                    from = i;
+                } else if (node == edge.to) {
+                    to = i;
+                }
+            }
+        }
+        if (from == -1 && to == -1) {
+            List<Integer> toAdd = new ArrayList<>();
+            toAdd.add(edge.from);
+            toAdd.add(edge.to);
+            parts.add(toAdd);
+            return false;
+        } else if (from == -1) {
+            parts.get(to).add(edge.from);
+            return false;
+        }
+        else if (to == -1) {
+            parts.get(from).add(edge.to);
+            return false;
+        } else {
+            if(to != from) {
+                parts.get(to).addAll(parts.get(from));
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -123,7 +199,8 @@ public class CompleteGraph {
         CompleteGraph completeGraph = new CompleteGraph(n);
         completeGraph.generateCompleteGraph();
         completeGraph.printMatrixOfEdges();
-        System.out.println(completeGraph.primsMST());
+        System.out.println(completeGraph.primMST());
+        System.out.println(completeGraph.kruskalMST());
     }
 
 }
