@@ -59,18 +59,18 @@ public class CompleteGraph {
 
     }
 
-    private class Edge implements Comparable<Edge>{
+    private class Edge implements Comparable<Edge> {
         int from, to;
-        double value;
+        double weight;
         private Edge(int from, int to, double value) {
             this.from = from;
             this.to = to;
-            this.value = value;
+            this.weight = value;
         }
 
         @Override
         public int compareTo(Edge o) {
-            double helper = this.value - o.value;
+            double helper = this.weight - o.weight;
             if(helper > 0) {
                 return 1;
             } else if(helper == 0) {
@@ -81,24 +81,69 @@ public class CompleteGraph {
         }
     }
 
+//    public List<Integer> primMST() {
+//        List<Integer> result = new ArrayList<>();
+//        for(int i = 0; i < size; i++) {
+//            result.add(-1);
+//        }
+//        PriorityQueue<Edge> pq = new PriorityQueue<>();
+//        int root = 0;
+//        int currentNode = root;
+//        int counter = 1;
+//        while(counter < size) {
+//            for(int i = 0; i < size; i ++) {
+//                if(edges[currentNode][i] != 0 && result.get(i) == -1 && i != root) {
+//                    pq.add(new Edge(currentNode, i, edges[currentNode][i]));
+//                }
+//            }
+//
+//            while(true) {
+//                Edge edge = pq.poll();
+//                if(edge == null) {
+//                    System.out.println("queue is empty");
+//                    return result;
+//                }
+//                int idx = edge.to;
+//                if(result.get(idx) == -1 && idx != root) {
+//                    result.set(idx, edge.from);
+//                    currentNode = idx;
+//                    counter ++;
+//                    break;
+//                }
+//            }
+//        }
+//        return result;
+//    }
+
     public List<Integer> primMST() {
         List<Integer> result = new ArrayList<>();
         for(int i = 0; i < size; i++) {
             result.add(-1);
         }
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
+        IndexedPQ<Edge> pq = new IndexedPQ<>(size + 1);
         int root = 0;
         int currentNode = root;
         int counter = 1;
         while(counter < size) {
             for(int i = 0; i < size; i ++) {
-                if(edges[currentNode][i] != 0 && result.get(i) == -1 && i != root) {
-                    pq.add(new Edge(currentNode, i, edges[currentNode][i]));
+                double currentWeight = edges[currentNode][i];
+                if(currentWeight != 0 && result.get(i) == -1 && i != root) {
+                    Edge newEdge = new Edge(currentNode, i, currentWeight);
+                    if(!pq.contains(i)) {
+                        pq.insert(i, newEdge);
+                    } else {
+                        Edge edge = pq.getKey(i);
+                        if(currentWeight < edge.weight) {
+                            pq.update(i, newEdge);
+                        }
+                    }
                 }
             }
 
             while(true) {
-                Edge edge = pq.poll();
+                int node = pq.peak();
+                Edge edge = pq.getKey(node);
+                pq.remove(node);
                 if(edge == null) {
                     System.out.println("queue is empty");
                     return result;

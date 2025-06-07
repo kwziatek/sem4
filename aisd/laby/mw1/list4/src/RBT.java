@@ -384,7 +384,7 @@ public class RBT {
 
     public static void main(String[] args) {
         RBT rbt = new RBT();
-        int n = 30;
+        int n = 25;
         insertSortedPermutation(n, rbt);
 
         rbt.printInorder();

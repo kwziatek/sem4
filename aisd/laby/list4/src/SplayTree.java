@@ -234,7 +234,7 @@ public class SplayTree {
 
     public static void main(String [] args) {
         SplayTree splayTree = new SplayTree();
-        int n = 30;
+        int n = 25;
         insertSortedPermutation(n, splayTree);
 
         System.out.println(splayTree.findHeight());
