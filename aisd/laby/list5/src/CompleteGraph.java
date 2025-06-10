@@ -161,6 +161,7 @@ public class CompleteGraph {
     }
 
     public List<List<Integer>> kruskalMST() {
+        //doesnt work in ElogE, determining if edge would create cycle is suboptimal is terms of time complexity
         List<Edge> listOfEdges = new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
         List<List<Integer>> parts = new ArrayList<>();
@@ -212,6 +213,7 @@ public class CompleteGraph {
                 }
             }
         }
+//        System.out.println(edge.from + " " + edge.to + " " + from + " " + to);
         if (from == -1 && to == -1) {
             List<Integer> toAdd = new ArrayList<>();
             toAdd.add(edge.from);
@@ -228,6 +230,7 @@ public class CompleteGraph {
         } else {
             if(to != from) {
                 parts.get(to).addAll(parts.get(from));
+                parts.remove(from);
                 return false;
             }
             else {
