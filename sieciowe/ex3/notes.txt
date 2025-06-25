@@ -1,0 +1,41 @@
+Jak działa ramkowanie z uwzględnieniem ramkowania bitów i CRC?
+
+Ramka składa się kolejno z: flagi (8 bitów), bitów po stuffingu(min 32bity), CRC(8 bitów), flagi(8 bitów).
+
+Standardowa flaga ramki to 01111110
+Standardowa długość ciągu, będącego daną do przekazania - 32 bity
+
+Jak działa bit stuffing?
+W celu odróżnienia ciągu bitów, które są wiadomością, od ramki po każdych 5 kolejnych bitach, będących jedynkami, wstawianie jest 0. Wtedy mamy pewność, że przypadkiem w tym ciągu bitów nie pojawi się przedwcześnie flaga ramki.
+
+Jak działa wyznaczanie CRC?
+Algorytm obliczania CRC (Cyclic Redundancy Check) polega na dzieleniu ciągu bitów (danych) przez wielomian generujący w arytmetyce binarnej, a reszta z tego dzielenia staje się sumą kontrolną CRC.
+
+CRC-8 oznacza zbiór wielominaów 8 stopnia, wybierzmy konkretnie wielomian generujący 100000111, co odpowiada (x^8 + x^2 + x + 1).
+
+Przykładowy ciąg danych: 1100110101 (10 bitów)
+
+Algorytm:
+Najpierw do oryginalnych danych dodajemy tyle zer ile wynosi najwyższa potęga wielomianu generującego, w tym przypadku 8.
+
+Czyli mamy: 110011010100000000
+
+    Bierzemy pierwsze 9 bitów (dlugość wielomianu generującego) z ciągu danych i xorujemy je z wielomianem generującym jeżeli pierwszy bit tego ciągu danych był 1, w przeciwnym razie nie robimy nic.
+
+    Następnie usuwamy pierwszy bit i dodajemy następny jeszcze nieużyty bit z wyjściowego ciągu danych.
+
+Działamy w ten sposób aż skończą się nieprzetworzone bity, ostatnie 8 bitów (z 9), które otrzymamy po przetworzeniu ostatniego bitu wyjściowego ciągu danych, to reszta, którą wrzucamy od ramki.
+
+Ważne jest to, że CRC liczymy na ciągu bitów, który chcemy przekazać przed stuffingiem.
+
+
+Jak działa operacja odwrotna do ramkowania?
+
+Najpierw należy pozbyć się ramki z początku i końca ciągu bitów. Następnie odczepiamy ostatnie 8bitów (CRC) i zapisujemy je. Później należy zdestuffingować, to co nam zostało, czyli za każdym razem, gdy znajdziemy kolejnych 5 jedynek, po nich musi następować 0, które usuwamy.
+
+W ten sposób otrzymujemy pierwotną wiadomością. Obliczamy CRC dla tej pierwotnej wiadomości i porównujemy z wcześniej zapisanym CRC, Jeżeli otrzumujemy, to samo CRC to z dużym prawdopodobieństwem wiadomość została poprawnie odczytana.
+
+Łatwo zauważyć, że im większy x, w CRC-x, tym weryfikacja przy pomocy CRC jest bardziej niezawodna, lecz potrzeba więcej czasu, żeby to CRC wyliczyć.
+
+
+

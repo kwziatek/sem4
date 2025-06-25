@@ -81,6 +81,6 @@ export default function Books() {
                     <li key={book.id}>{book.title} by {book.Author?.name}</li>
                 ))}
             </ul>
-        </>
+        </div>
     );
 }
