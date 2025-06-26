@@ -1,0 +1,13 @@
+Tworzenie serwera:
+my $d = HTTP::Daemon->new(
+    LocalAddr => '127.0.0.1',
+    LocalPort => 3000,
+) || die;
+
+Tworzy instancję serwera HTTP na hoście 127.0.0.1 i porcie 3000. Jeśli się nie uda (np. port jest zajęty), skrypt zakończy działanie (die).
+LocalAddr => '127.0.0.1' oznacza, że serwer nasłuchuje na interfejsie sieciowym związanym z nazwą hosta 127.0.0.1. Jeśli 127.0.0.1 nie jest poprawnie skonfigurowany w systemie, może to powodować błędy.
+
+Wypisuje adres URL serwera (np. http://lukim:4321/), pod którym można się z nim połączyć.
+print "Please contact me at: <URL:", $d->url, ">\n";
+
+
