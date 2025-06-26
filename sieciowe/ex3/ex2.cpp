@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include<math.h>
+#include <math.h>
 #include <algorithm>
 #include <ctime>
 #include <thread>
@@ -10,56 +10,48 @@
 using namespace std;
 
 struct Signal {
-    char label;
-    int left;
-    int right;
-    int ttl;
-    int width;
-    bool active;
-    bool success; // czy transmisja nie miała kolizji
-    int originStation; // indeks stacji
-    int stepStarted;
+    char label;         //symbol stacji
+    int dir;            //kierunek (-1 oznacza lewo, 1 prawo)
+    int position;       //indeks w medium
+    int originStation;  //indeks stacji
+
+    Signal() : label(' '), dir(0), position(0), originStation(-1) {}
 };
 
 struct Station {
-    int position;
-    int backoff;
-    int dataSize;
-    bool hasData;
-    bool isTransmitting;
-    int numOfCollisions;
-    char label;
-    bool success; // czy udało się przesłać (sygnał dotarł do obu końców bez kolizji)
-    int stepToLeft;  // w którym kroku sygnał dotarł do lewego końca
-    int stepToRight; // w którym kroku sygnał dotarł do prawego końca
+    int position;           //indeks w medium gdzie podłączona jest stacja
+    int backoff;            //delay po wykryciu kolizji czyli ilośc krokow czasowych do odczekania
+    int dataSize;           //szerokosc sygnału wysyłanego przez stacje
+    bool isTransmitting;    //czy stacja transmituje aktualnie
+    int numOfCollisions;    //ilość kolizji
+    char label; 
+    bool success;           // czy udało się przesłać (sygnał dotarł do obu końców bez kolizji)
+    int transmittedData;    // ilość przesłanych danych w aktualnej próbie przesłania sygnału (czyli aktualna szerokość sygnału)
+
+    Station() : position(0), backoff(0), dataSize(0), isTransmitting(false),
+                numOfCollisions(0), label(' '), success(false), transmittedData(0) {}
 };
 
-const int WIDTH = 55;
-const int MEDIUM_SIZE = 60;
-const int NUM_STATIONS = 5;
-const int TX_TIME = 4;
-const int MAX_BACKOFF = 300;
-const int SIGNAL_TTL = MEDIUM_SIZE + WIDTH;
+const int WIDTH = 55;           //szerokosc sygnalu bedziemy losowac miedzy width/2 a width
+const int MEDIUM_SIZE = 60;     //rozmiar medium
+const int NUM_STATIONS = 5;     //ilosc stacji
+const int MAX_BACKOFF = 200;    //maxymalny delay po wykryciu kolizji
 
 void printMedium(const vector<char>& medium) {
     for (int i = 0; i < medium.size(); ++i) {
-        cout << medium[i];
+        cout<<medium[i];
     }
     cout << endl;
 }
 
-bool checkIfSignalContainsIndex(Signal& sig, int index) {
-    if (sig.right - sig.left <= sig.width * 2) {
-        return index >= sig.left && index <= sig.right;
-    } else {
-        return (index >= sig.left && index <= sig.left + sig.width) || (index <= sig.right && index >= sig.right - sig.width);
-    }
-}
-
 int main() {
     mt19937 rng(time(nullptr));
-    uniform_int_distribution<int> posDist(0, MEDIUM_SIZE-1);
+
+    //generator pozycji dla stacji
+    uniform_int_distribution<int> posDist(1, MEDIUM_SIZE-2);
+    //generator delaya
     uniform_int_distribution<int> backoffDist(MEDIUM_SIZE, MAX_BACKOFF);
+    //generator rozmiaru danych (szerokości sygnału)
     uniform_int_distribution<int> widthDist(WIDTH/2, WIDTH);
 
     // Labels for stations: A, B, C, D, E...
@@ -67,29 +59,27 @@ int main() {
     for (int i = 0; i < NUM_STATIONS; ++i)
         stationLabels.push_back('A' + i);
 
-    // Initialize stations at random positions
-    vector<Station> stations;
+    // Inicjalizacja stacji na losowych pozycjach
+    vector<Station*> stations;
     vector<int> usedPos;
     while (stations.size() < NUM_STATIONS) {
         int p = posDist(rng);
         if (find(usedPos.begin(), usedPos.end(), p) == usedPos.end()) {
-            Station s;
-            s.position = p;
-            s.backoff = 0;
-            s.hasData = true;
-            s.isTransmitting = false;
-            s.dataSize = widthDist(rng);
-            s.numOfCollisions = 0;
-            s.label = stationLabels[stations.size()];
-            s.success = false;
-            s.stepToLeft = -1;
-            s.stepToRight = -1;
+            Station* s = new Station();
+            s->position = p;
+            s->backoff = 0;
+            s->isTransmitting = false;
+            s->dataSize = widthDist(rng);
+            s->numOfCollisions = 0;
+            s->transmittedData = 0;
+            s->label = stationLabels[stations.size()];
+            s->success = false;
             stations.push_back(s);
             usedPos.push_back(p);
         }
     }
 
-    vector<Signal> signals;
+    vector<Signal*> signals;
 
     int timeStep = 0;
     bool transmitting = true;
@@ -97,145 +87,143 @@ int main() {
     vector<bool> reachedLeft(NUM_STATIONS, false);
     vector<bool> reachedRight(NUM_STATIONS, false);
 
+    //wykonujemy pętle dopóki wszystkie stacje pomyslnie przeslą sygnał
     while (transmitting) {
         //cout << "Time step: " << timeStep << ": ";
 
-        // 1. Stacje decydują o nadawaniu
+        // 1. !Przesuwamy sygnały!
+        for (auto sig : signals) {
+            sig->position += sig->dir;
+        }
+
+        // dla kazdego indeksu w medium przechowujemy vector który zawiera sygnały które znajdują się na danym indeksie
+        vector<vector<Signal*>> medium(MEDIUM_SIZE, vector<Signal*>());
+
+        for (int i = 0; i < signals.size(); ++i) {
+            //usuwamy sygnaly które juz wyszły poza medium
+            if (signals[i]->position < 0 || signals[i]->position >= MEDIUM_SIZE) {
+                signals.erase(signals.begin() + i);
+                --i;
+                continue;
+            }
+            //dodajemy sygnał do medium
+            medium[signals[i]->position].push_back(signals[i]);
+        }
+
+        // 2. !Stacje decydują o nadawaniu!
         for (int idx = 0; idx < stations.size(); ++idx) {
-            auto& s = stations[idx];
-            // Stacja nie próbuje ponownie dopóki nie osiągnie sukcesu!
-            if (s.success) continue; // <- blokuje ponowne próby po sukcesie
-            if (!s.isTransmitting) {
-                if (s.backoff > 0) {
-                    --s.backoff;
-                } else if (s.hasData) {
-                    // Sense medium: czy w miejscu stacji nie ma sygnału (czyste)
-                    bool busy = false;
-                    for (auto& sig : signals)
-                        if (sig.active && checkIfSignalContainsIndex(sig, s.position))
-                            busy = true;
-                    if (!busy) {
-                        // Start transmission
-                        s.isTransmitting = true;
-                        // Dodaj nowy sygnał
-                        Signal sig;
-                        sig.label = s.label;
-                        sig.left = s.position;
-                        sig.right = s.position;
-                        sig.ttl = SIGNAL_TTL;
-                        sig.width = s.dataSize;
-                        sig.active = true;
-                        sig.success = true;
-                        sig.originStation = idx;
-                        sig.stepStarted = timeStep;
-                        signals.push_back(sig);
-                        // hasData zostaje true aż do sukcesu!
+            Station* s = stations[idx];
+            // Stacja nie próbuje ponownie jesli osiągneła sukces
+            if (s->success) continue;
+            // sprawdzamy czy nie mamy nalozonego delaya po kolizji
+            if (s->backoff <= 0) {
+                // czy port jest wolny
+                bool isPortFree = medium[s->position].size() == 0;
+
+                // czy skonczylismy nadawac sygnal
+                bool isAllDataTransmitted = s->transmittedData >= s->dataSize;
+
+                if (isPortFree && !isAllDataTransmitted) 
+                    s->isTransmitting = true;
+                else 
+                    s->isTransmitting = false;
+
+                // sprawdzamy czy w miejscu stacji nie ma sygnału oraz czy nie wyslalismy jeszcze całego sygnału
+                if (s->isTransmitting) {
+                    s->isTransmitting = true;
+                    // Dodaj nowy sygnał
+                    Signal *sigL = new Signal(), *sigR = new Signal(); // lewy i prawy sygnał
+                    sigR->label = sigL->label = s->label;
+                    sigR->position = sigL->position = s->position;
+                    sigR->originStation = sigL->originStation = idx;
+                    sigR->dir = 1; // w prawo
+                    sigL->dir = -1; // w lewo
+                    signals.push_back(sigL);
+                    signals.push_back(sigR);
+                    s->transmittedData++;
+                } else if (s->transmittedData > 0 && (medium[s->position].size() > 1 || 
+                        (medium[s->position].size() == 1 && medium[s->position][0]->label == '#'))) {
+                    // Trafia do nas sygnał kolizji bo stacja w trakcie nadawanie trafiła na inny sygnał
+                    // wiec losujemy backoff i przerywamy transmisje
+                    s->isTransmitting = false;
+                    s->transmittedData = 0; // reset przesłanych danych
+                    s->numOfCollisions++; // zwiększamy liczbę kolizji
+                    s->backoff = pow(2, s->numOfCollisions) * backoffDist(rng); // losuj backoff
+                    cout << "Stacja " << s->label << " medium zajęte! Losuje backoff: " << s->backoff << endl;
+                }
+            } else {
+                s->backoff--;
+            }
+        }
+
+        // 3. !Sprawdź kolizje!
+        for (int i = 0; i < medium.size(); ++i) {
+            auto& cell = medium[i];
+            //kolizja wystepuje kiedy w vectorze na danym indeksie jest wiecej niz jeden sygnał
+            if (cell.size() > 1) {
+                for (Signal* sig: cell) {
+                    sig->label = '#'; // oznaczamy kolizję, sygnal juz do konca bedzie oznaczony jako #
+                }
+            }
+        }
+
+        //4. generujemy wizualizacje medium
+        vector<char> mediumVisualisation(MEDIUM_SIZE, '.');
+        for (int i = 0; i < MEDIUM_SIZE; i++) {
+            auto& cell = medium[i];
+            if (cell.empty()) {
+                for (Station* s : stations) {
+                    if (s->position == i && s->isTransmitting) {
+                        mediumVisualisation[i] = s->label;
+                        break;
+                    }
+                }
+            } else if (cell.size() > 1) {
+                mediumVisualisation[i] = '#';
+            } else if (cell.size() == 1) {
+                mediumVisualisation[i] = cell[0]->label;
+            }
+        }
+
+        printMedium(mediumVisualisation);
+
+        // 5. Sprawdz czy stacja przeslala do prawego i lewego konca
+        for (int sig_idx = 0; sig_idx < signals.size(); ++sig_idx) {
+            Signal* sig = signals[sig_idx];
+            if (sig->label == '#') continue; // kolizja
+            if (sig->position == 0 && sig->dir == -1) {
+                auto& prev = medium[sig->position + 1];
+                if (prev.size() == 0 || (prev.size() == 1 && prev[0]->label != '#' && prev[0]->label != sig->label)) {
+                    if (!reachedLeft[sig->originStation]) {
+                        reachedLeft[sig->originStation] = true;
+                        //cout << "Sygnał stacji " << sig.label << " dotarł do lewego końca medium!\n";
+                    }
+                }
+                
+            } else if (sig->position == MEDIUM_SIZE - 1 && sig->dir == 1) {
+                auto& prev = medium[sig->position - 1];
+                if (prev.size() == 0 || (prev.size() == 1 && prev[0]->label != '#' && prev[0]->label != sig->label)) {
+                    if (!reachedRight[sig->originStation]) {
+                        reachedRight[sig->originStation] = true;
+                        //cout << "Sygnał stacji " << sig.label << " dotarł do lewego końca medium!\n";
                     }
                 }
             }
         }
 
-        // 2. Rozszerz sygnały w obie strony
-        for (auto& sig : signals) {
-            if (!sig.active) continue;
-            if (sig.ttl > 0) {
-                sig.left--;
-                sig.right++;
-                sig.ttl--;
-            } else {
-                sig.active = false;
+        for (int i = 0; i < stations.size(); ++i) {
+            Station* s = stations[i];
+            if (s->success) continue; // stacja już przesłała dane
+            if (reachedLeft[i] && reachedRight[i]) {
+                s->success = true; // sygnał dotarł do obu końców
+                cout << "Stacja " << s->label << " przesłała dane pomyślnie!\n";
             }
         }
 
-        // 4. Tworzymy obraz medium (mapa: pozycja -> lista stacji)
-        vector<vector<char>> medium_map(MEDIUM_SIZE);
-        vector<vector<int>> medium_sig_idx(MEDIUM_SIZE); // indeksy sygnałów
-        for (int sig_idx = 0; sig_idx < signals.size(); ++sig_idx) {
-            auto& sig = signals[sig_idx];
-            if (!sig.active) continue;
-            for (int i = sig.left; i <= min(sig.left + sig.width, sig.right); ++i) {
-                if (i < 0 || i >= MEDIUM_SIZE) continue;
-                medium_map[i].push_back(sig.success? sig.label : tolower(sig.label));
-                medium_sig_idx[i].push_back(sig_idx);
-            }
-            for (int i = sig.right; i >= max(sig.right - sig.width, sig.left); --i) {
-                if (i < 0 || i >= MEDIUM_SIZE) continue;
-                medium_map[i].push_back(sig.success? sig.label : tolower(sig.label));
-                medium_sig_idx[i].push_back(sig_idx);
-            }
-        }
-
-        // 5. Detekcja kolizji i wizualizacja
-        vector<char> medium(MEDIUM_SIZE, '.');
-        vector<int> collidedSignals; // sygnały, które mają kolizję
-        for (int i = 0; i < MEDIUM_SIZE; ++i) {
-            if (medium_map[i].empty()) continue;
-            vector<char>& v = medium_map[i];
-            sort(v.begin(), v.end());
-            v.erase(unique(v.begin(), v.end()), v.end());
-            if (v.size() > 1) {
-                medium[i] = '#';
-                // Kolizja – oznacz sygnały jako nieskuteczne
-                for (int idx : medium_sig_idx[i]) {
-                    signals[idx].success = false;
-                    if (stations[signals[idx].originStation].position != i) continue; // tylko sygnały stacji, które są w tym miejscu
-   
-                    collidedSignals.push_back(idx);
-                }
-            } else {
-                medium[i] = v[0];
-            }
-        }
-        // Oznacz stacje na medium (małe litery)
-        for (const auto& s : stations)
-            if (medium[s.position] == '.')
-                medium[s.position] = tolower(s.label);
-
-        printMedium(medium);
-
-        // 6. Zapamiętaj krok dotarcia sygnału stacji do końców medium
-        for (int sig_idx = 0; sig_idx < signals.size(); ++sig_idx) {
-            auto& sig = signals[sig_idx];
-            if (!sig.active) continue;
-            int st = sig.originStation;
-            if (!reachedLeft[st] && sig.left == 0) {
-                reachedLeft[st] = true;
-                stations[st].stepToLeft = timeStep;
-            }
-            if (!reachedRight[st] && sig.right == MEDIUM_SIZE - 1) {
-                reachedRight[st] = true;
-                stations[st].stepToRight = timeStep;
-            }
-        }
-
-        for (int idx : collidedSignals) {
-            if (stations[signals[idx].originStation].isTransmitting) {
-                stations[signals[idx].originStation].isTransmitting = false; // stacja przestaje nadawać
-                stations[signals[idx].originStation].hasData = true; // mogą próbować ponownie
-                int collisions = ++stations[signals[idx].originStation].numOfCollisions;
-                stations[signals[idx].originStation].backoff = pow(2, collisions) * backoffDist(rng); // losują backoff
-                cout << "Sygnał " << signals[idx].label << " z kolizją! Stacja " << stations[signals[idx].originStation].label
-                    << " przerywa nadawanie i losuje backoff: " << stations[signals[idx].originStation].backoff << endl;
-            }
-        }
-
-        // 8. Sprawdź sukces sygnałów (czy dotarł do obu końców i nie miał kolizji)
-        for (auto& sig : signals) {
-            if (!sig.active && sig.success) {
-                int st = sig.originStation;
-                if (stations[st].stepToLeft != -1 && stations[st].stepToRight != -1 && !stations[st].success) {
-                    stations[st].success = true;
-                    stations[st].hasData = false; // <-- teraz już nie będą próbować
-                    cout << "Stacja " << stations[st].label << " przesłała sygnał bez kolizji! (Lewy: " << stations[st].stepToLeft
-                        << ", Prawy: " << stations[st].stepToRight << ")\n";
-                }
-            }
-        }
-
-        // 9. Sprawdź zakończenie: czy wszystkim stacjom się udało
+        // 6. Sprawdź zakończenie: czy wszystkim stacjom się udało
         transmitting = false;
-        for (const auto& s : stations)
-            if (!s.success) transmitting = true;
+        for (Station* s : stations)
+            if (!s->success) transmitting = true;
 
         this_thread::sleep_for(chrono::milliseconds(50));
         ++timeStep;
@@ -244,13 +232,7 @@ int main() {
     cout << "\nSymulacja zakończona!\n";
     cout << "Raport dotarcia sygnału do końców medium:\n";
     for (int i = 0; i < stations.size(); ++i) {
-        cout << "Stacja " << stations[i].label << " (pozycja " << stations[i].position << "): ";
-        if (stations[i].success) {
-            cout << "sukces, lewy koniec w kroku " << stations[i].stepToLeft
-                 << ", prawy koniec w kroku " << stations[i].stepToRight << endl;
-        } else {
-            cout << "nieudana transmisja\n";
-        }
+        cout << "Stacja " << stations[i]->label << " (pozycja " << stations[i]->position << "): ";
     }
     return 0;
 }
