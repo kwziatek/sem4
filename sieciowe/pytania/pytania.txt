@@ -1,0 +1,139 @@
+protokoły sieciowe
+    - zadania :
+        - identyfikacja elementów komunikującyh
+        - podanie sposobu określania właściwego adresata
+        - podanie sposoby rozpoczęcia i kończenia transmisji
+        - podanie sposobu przesyłania danych
+    podział(łączy komunikacyjnych) :
+        - ze względu na sposób połączeń: sieci szkieletowe(sieci rozległe), sieci dostępu lokalnego
+        - ze względu na typ podsieci: punkt - punkt(sieci rozległe), wielopunktową (LAN, MAN)
+
+    sieci szkieletowe(łącze sieci WAN) :
+        - wiele linii, każda łączy parę komputerów. Jeżeli nie ma bezpośredniego połączenia, wykorzystuje się już istniejące połączenia.
+        - jeśli dane są przesyłane z jednego komputera do drugiego przy pośrednictwie innych komputerów, to wszystkie komputery pośredniczące przesyłają dane do kolejnych etapów jeśli linie są wolne, odbierą i zapamiętują dane aż do chwili gdy zajęte linie się zwolnią
+    sieci LAN :
+        - wykorzystuje się zasadę rozsiewania informacji, tylko jeden komputer w danym czasie może nadawać reszta musi słuchać, następuje konkurencja między komputerami o dostęp do kanału komunikacyjnego.
+    sieci WAN :
+        - łączy sieci LAN i MAN twrorząc sieć bardzo rozległą geograficznie, czego skutkiem jest większa podatność na zakłócenia i większe opóźnienie.
+    grafowy model sieci :
+        - graf S = <G, H> gdzie G jest grafem, H zbiorem wag dla krawędzi
+        - kanały dupleksowe i simpleksowe
+        Funkcje ze zbioru H reprezentują właściowości takie jak niezawodność połączenia, przepustowość i koszt.
+        Można wykorzystać macierz sąsiedztwa do opisania grafu
+
+Trasy, parametry, funkcje, komutacja
+    -trasy
+        - komunikacja między komputerami polega na wysyłaniu łączami komunikacyjnymi z jednego komputera do innego pewną liczbę bitów pogrupowane w jednostki zwane pakietami
+        - mamy węzeł źródłowy i węzeł końcowy
+        - musi instnieć co najmniej jedna trasa od źródła do ujścia
+    -parametry
+        - natężenie pakietów - liczba pakietów wysyłanaych w ciągu sekundy
+        - przepustowość - maksymalna liczba bitów, którą można wprowadzić do łącza w ciągu sekundy
+        - opóźnienie - czas (sek) potrzebny na przesłanie pakietów z jendego komputera do innego.
+    -rodzaje opóźnienia
+        - opóźnienie propagacji - transmisja przewodem elektrycznym, światłowodem
+        - opóźnienie dostępu - w sieciach lokalnych (oczekiwanie na dostęp do nadawania)
+        - opóźnienie kolejkowania, przełączania - w sieciach szkieletowych czas oczekiwania w buforze węzła czekając na wysłanie, czas wyboru następnego etapu trasy dla pakietu.
+    - średnie opóźnienie pakietu - średni czas przepływu pojedynczego pakietu od źródła do ujścia
+    -komutacja : proces kierowania danych w sieciach z jednego punktu do drugiego. Polega na nawiązywaniu połączenia między urządzeniami poprzez wybór odpowiedniej ścieżki transmisyjnej. 
+    Wyróżnia się komutacje kanałów, komórek, pakietów.
+        -komutacja pakietów - polega na przesyłaniu danych za pomocą pakietów. pakiety są wysyłane od siebie niezależnie i składane w całość u odbiorcy. Np internet, sieci TCP/IP
+        -komutacja kanałów : metoda w której tworzona jest dedykowana ciągła ścieżka na czas trawania połączenia (kanał zarezerwowany wyłączenie dla tego połączenia)
+        -komunikacja komórek  ~ pakietów (komórki są znacznie krótsze), datagram = pakiet
+    - zalety komunikacji pakietów :
+        - możliwość zajmowania i zwalniania medium komunikacyjnego zgodnie z potrzebami transmisyjnymi
+        - możliwość współużytkowania łącza przez pakiety pochodzących z róźnych źródeł i zmierzających do róźnych ujść
+
+
+
+- warstwy
+    -rodzaje : warstwa aplikcji, transportowa, sieciowa, łącza danych, fizyczna
+
+    - warstwa aplikcji : (opisują format danych dla aplikcji, interfejs miedzy aplikcjami uzytkownika a uslugami sieci)
+        - http, smtp, ssh, ftp
+    - warstwa transportowa : (działają na portach)
+        - tcp - kontrola przepływu, retransmisja, kontrola zatrów, udp
+    - warstwa sieciowa : (protokoły routingowe, które wyznaczają ścieżki między komputerami, operują na adresach ip)
+        - ip, icmp, arp
+    - warstwa łącza danych :
+        - ethernet - ramkowanie, detekcja kolizji, operuje na adersach MAC (adresy sprzetowe)
+    - fizyczna :
+    modulacja sygnału - za pomocą przesunięć fazy i modulowania amplitudy.
+
+
+dane opakowywane w naglowek http, to jest dawane do warstwy transportowej i dane swoj header (porty, numery sekwencji, segmenty)
+
+Warstwy sieciowe to sposób organizacji funkcji w sieciach komputerowych, dzielący proces komunikacji na logiczne poziomy. Każdy proces odpowiada za określone poziome i współpracuje z innymi wartstawami.
+Istnieje kilka modeli warstw sieciowych, najpopularniejsze to: model OSI (Open Systems Interconnection) oraz model TCP/IP
+
+Model OSI - 7 warstw
+    1. Warstwa fizyczna 
+
+Przykład: wysyłanie maila za pomocą programu pocztowego
+    (proces u nadawcy)
+    1. warstwa aplikacji
+        co sie dzieje: Użytkownik pisze wiadomość e-mail w programie pocztowym (np. Gmail)
+                        podaje adres obiorcy, teamt, dodaje załącznik. 
+                        Po wciśnieciu wyślij program używa protokołu SMTP(Simple Mail Transfer Protocol) do przesłania wiadomości do serwera pocztowego.
+        dane: 
+            Treść wiadomości, adres nadawcy i odbiorcy, temat, załącznik
+        wyjście:
+            Dane w formacie zrozumiałym dla aplikacji
+    2. warstwa prezentacji
+        co sie dzieje: Dane są przekształcane do standardowego formatyu odpowiedniego do transmisji.
+            Teskt jest kodowany w UTF-8, załączniki mogą być kodowane lub szyfrowane, multimedia konwertowane na postać binarną. (W skrócie formatowanie danych z formatu aplikacji na format sieci)
+        wyjście: ujednolicone dane gotowe do dalszej transmisji
+    3. warstwa sesji
+        co sie dzieje: Ustanawiana jest sesja między programem pocztowym a serwerem. Warstwa ta zarządza połączeniem. Tutaj dochodzi do framgmentacji jeśli jest to koniczne.
+        wyjście: zarządzane połączenie między nadawcą a odbiorcą
+    4. warstwa transportowa 
+        co sie dzieje: Dane są dzielone na mniejsze części zwane segmentami (segmentacja). Używany jest protokół TCP (lub UDP są to protokoły transportowe), który zapewnia niezawodność
+                        transmisji: numeruje segmenty, potwierdza ich odbiór i kontroluje przepływ danych.
+        wyjście: segmenty danych z nagłówkami TCP
+    5. warstwa sieciowa
+        co sie dzieje: segmenty są pakowane w pakiety IP. Dodane są adresy IP nadawcy i odbiorcy, co umożliwa routing przez sieć.
+        wyjście: pakiety IP zawierające segemnty TCP
+    6. warstwa łącza danych (na poziomie sieci lokalnej)
+        co sie dzieje: Pakiety IP są umieszczane w ramach, np. w formacie Ethernet. Dodawane są adresy fizyczne MAC urządzeń w lokalnej sieci, a także sumy kontrolne wykrywania błędów,
+        wyjści: ramki danych z nagłówkami i stopkami.
+    7. warstwa fizyczna
+        co sie dzieje: Ramki są przekształcane w bity i przesyłane przez medium ficzyne np. kable miedziane, światłowody lub fale radiowe (wifi sygnały elektryczne, optyczne, radiowe)
+
+    (proces u odbiorcy)
+    1. warstwa fizyczna
+        co sie dzieje: sygnały fizyczne są odbierane i przekształcane z powrotem w bity, a następnie w ramki.
+        wyjście: ramki danych
+    2. warstwa łącza danych 
+        co sie dzieje: ramki są sprawdzane pod kątem błędów (za pomocą sum kontrolnych np. CRC), nagłówki są usuwane a pakiety IP przekazywane do warstwy sieciowej
+        wyjście: pakiety IP
+    3. warstwa sieciowa
+        co sie dzieje: odczytywane są adresy IP, nagłówki IP są usuwane, a segemnty TCP przekazywane do warstwy transportowej.
+        wyjście: segmenty TCP
+    4. warstwa transportowa
+        co sie dzieje: segemnty TCP są rekonstruowane w oryginalne dane. Sprawdzana jest ich kolejność i integralność, a w razie potrzeby żądane są retransmisje.
+        wyjście: zrekontruowane dane
+    5. warstwa sesji 
+        co sie dzieje: utrzymuje sejsę komunikacyjną z serwerem, dopóki transmisja się nie zakończy.
+        wyjście: zarządzene połączenie
+    6. warstwa prezentacji
+        co sie dzieje: dane są dekodowane, odszyfrowane i dekompresowane
+        wyjście: dane w formacie czytelnym dla aplikacji
+    7. warstwa aplikacji
+        co sie dzieje: przetwarzanie wiadomości e-mail i ewentualne przekazanie jej do odbiory przez serwer.
+        wyjście: oryginalna wiadomość emial z załącznikiem
+    
+
+Fragmentacja - zachodzi na warstwie sieciowej (warstwa 3 modelu OSI), na przykład w protokole IP. Jej głównym celem jest dostosowanie rozmairu pakietów do maksymlanej jednostki transmisji (MTU) sieci,
+                przez którą dane są przysłane. Jeśli pakiet jest zbyt duży dla danej sieci, zostaje podzielony na mniejsze fragmenty.
+            Proces:
+                - Fragmentację wykonują routery lub hosty nadawcze.
+                - Odbiorca zbiera fragmenty i rekonstruuje oryginalny pakiet
+            Przykład zastosowania: przesyłanie dużego pakietu z sieci Ethernet (MTU 1500 bajtów) do siecie o mniejszym MTU.
+Segmentacja - odbywa się w warstwie transportowej (warstwa 4 modelu OSI), na przykład w protokole TCP.
+                Jej celem jest podział strumienia danych na mniejsze segmenty, aby zapewnić niezawodną transmisję, kontrolę przepływu i zarządzanie połączeniem.
+            Proces:
+                - segmentację realizują protokoły transportowe takie jak TCP, które dzielą dane na segmenty o odpowiedniej wielkości
+                - Każdy segment ma numer sekwencyjny, co pozwala na retransmisję w przypadku utratu lub błędu
+                - Odbiorca potwierdza odbiór segmentów, a nadawca ponownie może wysłać utracone dane
+            Przykład zastosowania: Niezawodna transmija danych w aplikacjach.
+
